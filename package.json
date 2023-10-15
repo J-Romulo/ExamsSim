@@ -9,7 +9,6 @@
     "web": "expo start --web",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "prettier": "prettier 'src/**/*.js'",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -43,7 +42,7 @@
   },
   "lint-staged": {
 		"**/*.{js,jsx}": [
-			"yarn prettier",
+			"yarn prettier --write",
 			"yarn eslint --fix"
 		]
 	},
