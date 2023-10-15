@@ -9,6 +9,7 @@ import { uid } from 'uid';
 import { LoadingModal } from '../../../components/LoadingModal';
 import { useStorage } from '../../../hooks/useStorage';
 import { useNavigation } from '@react-navigation/native';
+import { Container } from '../../../global/styles/globalComponents';
 
 const schema = object({
     title: string()
@@ -42,7 +43,7 @@ export function CreateSubject(){
     }
 
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={loading} />
             <TextField 
                 label={'Título'}
@@ -61,6 +62,6 @@ export function CreateSubject(){
                 title="Criar matéria"
                 color="#1969d3"
             />
-        </S.Container>
+        </Container>
     )
 }

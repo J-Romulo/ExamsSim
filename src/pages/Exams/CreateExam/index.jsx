@@ -11,6 +11,7 @@ import { DropdownSelect } from "../../../components/DropdownSelect";
 import { TimePicker } from 'react-native-simple-time-picker'
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { uid } from 'uid';
+import { Container } from '../../../global/styles/globalComponents';
 
 const schema = object({
     title: string()
@@ -116,7 +117,7 @@ export function CreateExam(){
     }, [valueSubject])
 
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={loading} />
             <TextField 
                 label={'Título'}
@@ -170,6 +171,6 @@ export function CreateExam(){
                 title="Criar simulado"
                 color="#1969d3"
             />
-        </S.Container>
+        </Container>
     )
 }

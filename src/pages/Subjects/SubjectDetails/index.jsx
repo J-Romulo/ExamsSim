@@ -6,6 +6,7 @@ import { FlatList, Text, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as S from './styles'
+import { Container } from '../../../global/styles/globalComponents';
 
 export function SubjectDetails({ route }){
     const { id } = route.params;
@@ -55,7 +56,7 @@ export function SubjectDetails({ route }){
     }
 
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={loading} />
             <S.FieldLabel>Título</S.FieldLabel>
             <S.FieldValue>{subject?.title}</S.FieldValue>
@@ -81,6 +82,6 @@ export function SubjectDetails({ route }){
                 onRefresh={onRefresh}
                 refreshing={refreshing}
             />
-        </S.Container>
+        </Container>
     )
 }

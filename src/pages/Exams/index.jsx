@@ -1,13 +1,14 @@
-import {View, Text} from 'react-native'
+import {Text} from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import * as S from './styles'
 import { useNavigation } from '@react-navigation/native';
+import { Container } from '../../global/styles/globalComponents';
 
 export function Exams(){
     const { navigate } = useNavigation();
     
     return(
-        <S.Container>
+        <Container>
             <Text>
                 Simulados
             </Text>
@@ -18,6 +19,6 @@ export function Exams(){
             >
                 <AntDesign name="plus" size={24} color="black" />
             </S.CreateButton>
-        </S.Container>
+        </Container>
     )
 }

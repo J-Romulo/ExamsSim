@@ -11,6 +11,7 @@ import { useStorage } from '../../../hooks/useStorage';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { RadioButton, Text } from 'react-native-paper';
+import { Container } from '../../../global/styles/globalComponents';
 
 import * as S from './styles'
 
@@ -69,7 +70,7 @@ export function CreateQuestion({ route }){
     }
 
     return(
-        <S.Container>
+        <Container>
             <ScrollView style={{ flex: 1 }}>
             <LoadingModal isVisible={loading} />
             <TextField 
@@ -132,6 +133,6 @@ export function CreateQuestion({ route }){
                 color="#1969d3"
             />
             </ScrollView>
-        </S.Container>
+        </Container>
     )
 }

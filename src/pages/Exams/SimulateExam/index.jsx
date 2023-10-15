@@ -3,6 +3,7 @@ import { useStorage } from "../../../hooks/useStorage"
 import { useState, useEffect } from 'react'
 import { LoadingModal } from '../../../components/LoadingModal';
 import { FlatList, Text, View } from 'react-native'
+import { Container } from '../../../global/styles/globalComponents';
 
 export function SimulateExam({ route }){
     const { id } = route.params;
@@ -57,13 +58,13 @@ export function SimulateExam({ route }){
 
     if(!currentQuestion){
         return(
-            <S.Container>
+            <Container>
                 <LoadingModal isVisible={loading} />
-            </S.Container>
+            </Container>
         )
     }
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={loading} />
             <S.FieldLabel>Questão</S.FieldLabel>
             <S.FieldValue>{currentQuestion.question}</S.FieldValue>
@@ -77,6 +78,6 @@ export function SimulateExam({ route }){
                 renderItem={RenderQuestion}
                 keyExtractor={(item) => item}
             />
-        </S.Container>
+        </Container>
     )
 }

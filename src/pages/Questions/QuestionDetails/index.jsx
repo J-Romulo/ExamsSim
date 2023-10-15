@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useIsFocused } from '@react-navigation/native';
 import { useStorage } from '../../../hooks/useStorage';
 import { LoadingModal } from '../../../components/LoadingModal';
-import { useNavigation } from '@react-navigation/native';
 import * as S from './styles'
+import { Container } from '../../../global/styles/globalComponents';
 
 export function QuestionDetails({ route }){
     const { id } = route.params;
@@ -24,7 +24,7 @@ export function QuestionDetails({ route }){
     }, [isFocused, id])
 
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={loading} />
             <S.FieldLabel>Questão</S.FieldLabel>
             <S.FieldValue>{question?.question}</S.FieldValue>
@@ -41,6 +41,6 @@ export function QuestionDetails({ route }){
             <S.FieldLabel>Alternativa correta</S.FieldLabel>
             <S.FieldValue>{`#${Number(question?.correct_answer)+1}`}</S.FieldValue>
 
-        </S.Container>
+        </Container>
     )
 }

@@ -1,10 +1,5 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-    flex: 1;
-    padding: 20px;
-`
-
 export const CreateButton = styled.TouchableOpacity`
     width: 60px;
     height: 60px;

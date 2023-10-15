@@ -6,6 +6,7 @@ import { LoadingModal } from '../../components/LoadingModal';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
+import { Container } from '../../global/styles/globalComponents';
 
 export function Subjects(){
     const {fetchSubjects, loading} = useStorage()
@@ -55,7 +56,7 @@ export function Subjects(){
     }
 
     return(
-        <S.Container>
+        <Container>
             <LoadingModal isVisible={!subjects.length && loading} />
             <FlatList 
                 data={subjects}
@@ -72,6 +73,6 @@ export function Subjects(){
             >
                 <AntDesign name="plus" size={24} color="black" />
             </S.CreateButton>
-        </S.Container>
+        </Container>
     )
 }
