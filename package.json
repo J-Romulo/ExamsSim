@@ -24,6 +24,7 @@
     "react-hook-form": "^7.46.1",
     "react-native": "0.72.4",
     "react-native-dropdown-picker": "^5.4.6",
+    "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.10.6",
     "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "~3.22.0",
@@ -41,10 +42,10 @@
     "prettier": "^3.0.3"
   },
   "lint-staged": {
-		"**/*.{js,jsx}": [
-			"yarn prettier --write",
-			"yarn eslint --fix"
-		]
-	},
+    "**/*.{js,jsx}": [
+      "yarn prettier --write",
+      "yarn eslint --fix"
+    ]
+  },
   "private": true
 }
