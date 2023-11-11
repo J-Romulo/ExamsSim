@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 
 import { FinishExamModal } from './FinishExamModal';
 import * as S from './styles';
@@ -93,7 +93,7 @@ export function SimulateExam({ route }) {
         finishExam();
       } else {
         saveCurrentQuestionWithNoTime();
-        alert('O tempo para responder essa questão acabou.');
+        Alert.alert('Sem tempo!', 'O tempo para responder essa questão acabou.');
       }
     }
   }, [hours, minutes, seconds]);
