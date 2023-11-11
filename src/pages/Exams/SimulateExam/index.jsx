@@ -21,6 +21,13 @@ export function SimulateExam({ route }) {
   const [finishedExam, setFinishedExam] = useState(false);
   const [isResultModalVisible, setResultModalVisible] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState({
+    hour: -1,
+    minute: -1,
+    second: -1,
+    question_id: '',
+  });
+
   const { goBack } = useNavigation();
 
   async function fetchExamItem() {
@@ -49,16 +56,62 @@ export function SimulateExam({ route }) {
     }
   }, [id]);
 
-  const [, hours, minutes, seconds] = useCountdown({ hours: exam?.hour, minutes: exam?.minute });
+  useEffect(() => {
+    const examType = exam?.examType;
+    const question_id = examType === 'overall_time' ? '' : currentQuestion?.id;
+
+    if (
+      examType === 'question_time' &&
+      (currentQuestion?.hour || currentQuestion?.minute || currentQuestion?.second)
+    ) {
+      setCurrentTime({
+        hour: Number(currentQuestion.hour),
+        minute: Number(currentQuestion.minute),
+        second: Number(currentQuestion.second),
+        question_id,
+      });
+    } else {
+      setCurrentTime({
+        hour: Number(exam?.hour),
+        minute: Number(exam?.minute),
+        second: 0,
+        question_id,
+      });
+    }
+  }, [currentQuestion, exam]);
+
+  const [, hours, minutes, seconds] = useCountdown({
+    hours: currentTime.hour,
+    minutes: currentTime.minute,
+    seconds: currentTime.second,
+    question_id: currentTime.question_id,
+  });
+
+  useEffect(() => {
+    if (!hours && !minutes && !seconds) {
+      if (exam?.examType === 'overall_time') {
+        finishExam();
+      } else {
+        saveCurrentQuestionWithNoTime();
+        alert('O tempo para responder essa questão acabou.');
+      }
+    }
+  }, [hours, minutes, seconds]);
 
   function nextQuestion() {
     if (!questions[currentQuestionindex + 1]) return;
+
+    saveCurrentQuestionWithCurrentTime();
+
     setCurrentQuestion(questions[currentQuestionindex + 1]);
     setCurrentQuestionIndex(currentQuestionindex + 1);
   }
 
   function lastQuestion() {
     if (!questions[currentQuestionindex - 1]) return;
+
+    saveCurrentQuestionWithCurrentTime();
+
     setCurrentQuestion(questions[currentQuestionindex - 1]);
     setCurrentQuestionIndex(currentQuestionindex - 1);
   }
@@ -73,6 +126,27 @@ export function SimulateExam({ route }) {
     setCurrentQuestion((prevData) => {
       return { ...prevData, selectedAnswer: item.index };
     });
+  }
+
+  function saveCurrentQuestionWithCurrentTime() {
+    const newQuestionsArray = [...questions];
+    newQuestionsArray[currentQuestionindex] = {
+      ...newQuestionsArray[currentQuestionindex],
+      hour: hours,
+      minute: minutes,
+      second: seconds,
+    };
+    setQuestions(newQuestionsArray);
+  }
+
+  function saveCurrentQuestionWithNoTime() {
+    const newQuestionsArray = [...questions];
+    newQuestionsArray[currentQuestionindex] = {
+      ...newQuestionsArray[currentQuestionindex],
+      no_time: true,
+    };
+    setQuestions(newQuestionsArray);
+    setCurrentQuestion(newQuestionsArray[currentQuestionindex]);
   }
 
   function RenderQuestion(item) {
@@ -125,17 +199,17 @@ export function SimulateExam({ route }) {
 
       <S.ExamHeader>
         <S.ArrowButton onPress={lastQuestion}>
-          <AntDesign name="arrowleft" size={24} color="black" />
+          <AntDesign name="arrowleft" size={32} color="black" />
         </S.ArrowButton>
 
         <S.QuestionsCount>{`${currentQuestionindex + 1}/${questions.length}`}</S.QuestionsCount>
 
-        {!!(hours && minutes && seconds) && (
+        {!!(hours > 0 || minutes > 0 || seconds > 0) && (
           <CountdownTimer hours={hours} minutes={minutes} seconds={seconds} />
         )}
 
         <S.ArrowButton onPress={nextQuestion}>
-          <AntDesign name="arrowright" size={24} color="black" />
+          <AntDesign name="arrowright" size={32} color="black" />
         </S.ArrowButton>
       </S.ExamHeader>
 
