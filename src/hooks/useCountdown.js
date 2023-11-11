@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export function useCountdown({ hours, minutes }) {
+export function useCountdown({ hours, minutes, seconds, question_id }) {
   const countDownDate = new Date();
   countDownDate.setHours(countDownDate.getHours() + Number(hours));
   countDownDate.setMinutes(countDownDate.getMinutes() + Number(minutes));
+  countDownDate.setSeconds(countDownDate.getSeconds() + Number(seconds));
 
   const [countDown, setCountDown] = useState(countDownDate.getTime() - new Date().getTime());
 
@@ -21,7 +22,7 @@ export function useCountdown({ hours, minutes }) {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [hours]);
+  }, [hours, minutes, seconds, question_id]);
 
   return getReturnValues(countDown);
 }
