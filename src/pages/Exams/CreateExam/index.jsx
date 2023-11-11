@@ -123,54 +123,58 @@ export function CreateExam() {
   return (
     <Container>
       <LoadingModal isVisible={loading} />
-      <TextField
-        label="Título"
-        error={errors?.title}
-        placeholder="Ex.: ENEM"
-        onChangeText={(text) => setValue('title', text)}
-      />
-      <TextField
-        label="Descrição"
-        error={errors?.description}
-        placeholder="Ex.: Simulado para estudo ENEM"
-        onChangeText={(text) => setValue('description', text)}
-      />
+      <S.FormContainer>
+        <TextField
+          label="Título"
+          error={errors?.title}
+          placeholder="Ex.: ENEM"
+          onChangeText={(text) => setValue('title', text)}
+        />
+        <TextField
+          label="Descrição"
+          error={errors?.description}
+          placeholder="Ex.: Simulado para estudo ENEM"
+          onChangeText={(text) => setValue('description', text)}
+        />
 
-      <S.Label>Tipo de simulado</S.Label>
-      <DropdownSelect
-        value={valueDropdown}
-        setValue={(value) => handleChangeExamType(value)}
-        values={dropDownItems}
-        setItems={setDropDownItems}
-      />
+        <S.Label>Tipo de simulado</S.Label>
+        <DropdownSelect
+          value={valueDropdown}
+          setValue={(value) => handleChangeExamType(value)}
+          values={dropDownItems}
+          setItems={setDropDownItems}
+        />
 
-      {(valueDropdown === 'overall_time' || valueDropdown === 'question_time') && (
-        <>
-          <S.Label>
-            {valueDropdown === 'overall_time' ? 'Tempo do simulado' : 'Tempo de cada questão'}
-          </S.Label>
-          <S.TimeInput>
-            <TimePicker hours={hours} minutes={minutes} onChange={handleChangeTime} />
-          </S.TimeInput>
-          <S.ErrorMessage>{errors?.hour?.message}</S.ErrorMessage>
-          <S.ErrorMessage>{errors?.minute?.message}</S.ErrorMessage>
-        </>
-      )}
+        {(valueDropdown === 'overall_time' || valueDropdown === 'question_time') && (
+          <>
+            <S.Label>
+              {valueDropdown === 'overall_time' ? 'Tempo do simulado' : 'Tempo de cada questão'}
+            </S.Label>
+            <S.TimeInput>
+              <TimePicker hours={hours} minutes={minutes} onChange={handleChangeTime} />
+            </S.TimeInput>
+            <S.ErrorMessage>{errors?.hour?.message}</S.ErrorMessage>
+            <S.ErrorMessage>{errors?.minute?.message}</S.ErrorMessage>
+          </>
+        )}
 
-      <S.Label>Questões</S.Label>
-      <DropdownSelect
-        value={valueSubject}
-        setValue={setValueSubject}
-        values={subjectItems}
-        setItems={setSubjectItems}
-        multiple
-        zIndex={3000}
-        zIndexInverse={1000}
-        placeholder="Selecione múltiplos itens"
-      />
-      <S.ErrorMessage>{errors?.subjects?.message}</S.ErrorMessage>
+        <S.Label>Questões</S.Label>
+        <DropdownSelect
+          value={valueSubject}
+          setValue={setValueSubject}
+          values={subjectItems}
+          setItems={setSubjectItems}
+          multiple
+          zIndex={3000}
+          zIndexInverse={1000}
+          placeholder="Selecione múltiplos itens"
+        />
+        <S.ErrorMessage>{errors?.subjects?.message}</S.ErrorMessage>
 
-      <Button onPress={handleSubmit(onSubmit)} title="Criar simulado" color="#1969d3" />
+        <S.ButtonContainer>
+          <Button onPress={handleSubmit(onSubmit)} title="Criar simulado" color="#1969d3" />
+        </S.ButtonContainer>
+      </S.FormContainer>
     </Container>
   );
 }
