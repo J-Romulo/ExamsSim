@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
 
@@ -18,6 +19,9 @@ export function SimulateExam({ route }) {
   const [currentQuestion, setCurrentQuestion] = useState();
   const [currentQuestionindex, setCurrentQuestionIndex] = useState(0);
   const [finishedExam, setFinishedExam] = useState(false);
+  const [isResultModalVisible, setResultModalVisible] = useState(false);
+
+  const { goBack } = useNavigation();
 
   async function fetchExamItem() {
     const exam = await fetchExam(id);
@@ -72,7 +76,13 @@ export function SimulateExam({ route }) {
   }
 
   function RenderQuestion(item) {
+    const timeEnded = currentQuestion.no_time ?? false;
+    let correctAnswer = false;
     const selectedAnswer = currentQuestion.selectedAnswer === item.index;
+
+    if (finishedExam) {
+      correctAnswer = Number(currentQuestion.correct_answer) === Number(item.index);
+    }
 
     return (
       <S.ItemContainer
@@ -80,7 +90,10 @@ export function SimulateExam({ route }) {
           e.preventDefault();
           selectAnswer(item);
         }}
-        selected={selectedAnswer}>
+        selected={selectedAnswer}
+        correct={correctAnswer}
+        disabled={finishedExam || timeEnded}
+        finishedExam={finishedExam}>
         <S.ItemTitle>{item.item}</S.ItemTitle>
       </S.ItemContainer>
     );
@@ -88,6 +101,11 @@ export function SimulateExam({ route }) {
 
   function finishExam() {
     setFinishedExam(true);
+    setResultModalVisible(true);
+  }
+
+  function exitExam() {
+    goBack();
   }
 
   if (!currentQuestion || !exam) {
@@ -99,7 +117,11 @@ export function SimulateExam({ route }) {
   }
   return (
     <Container>
-      {!!finishedExam && <FinishExamModal />}
+      <FinishExamModal
+        questions={questions}
+        isModalVisible={isResultModalVisible}
+        setModalVisible={setResultModalVisible}
+      />
 
       <S.ExamHeader>
         <S.ArrowButton onPress={lastQuestion}>
@@ -131,9 +153,23 @@ export function SimulateExam({ route }) {
         keyExtractor={(item) => item}
       />
 
-      <S.FinishButton onPress={finishExam}>
-        <S.ButtonText>Finalizar teste</S.ButtonText>
-      </S.FinishButton>
+      {finishedExam ? (
+        <S.ButtonsContainer>
+          <S.FinishButton
+            onPress={() => setResultModalVisible(true)}
+            style={{ backgroundColor: '#1969d3' }}>
+            <S.ButtonText>Ver resultados</S.ButtonText>
+          </S.FinishButton>
+
+          <S.FinishButton onPress={exitExam}>
+            <S.ButtonText>Sair</S.ButtonText>
+          </S.FinishButton>
+        </S.ButtonsContainer>
+      ) : (
+        <S.FinishButton onPress={finishExam}>
+          <S.ButtonText>Finalizar teste</S.ButtonText>
+        </S.FinishButton>
+      )}
     </Container>
   );
 }

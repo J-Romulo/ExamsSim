@@ -16,6 +16,21 @@ export const QuestionsHeader = styled.View`
   flex-direction: row;
 `;
 
+const getBackgroundColor = (props) => {
+  switch (true) {
+    case props.correct:
+      return props.theme.colors.green;
+    case props.selected && props.finishedExam:
+      return props.theme.colors.red;
+    case props.selected:
+      return props.theme.colors.primary;
+    case props.disabled:
+      return 'whitesmoke';
+    default:
+      return 'white';
+  }
+};
+
 export const ItemContainer = styled.TouchableOpacity`
   width: 100%;
   height: 70px;
@@ -29,7 +44,7 @@ export const ItemContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 
-  background-color: ${(props) => (props.selected ? props.theme.colors.primary : 'white')};
+  background-color: ${getBackgroundColor};
 `;
 
 export const ItemTitle = styled.Text`
@@ -52,7 +67,8 @@ export const ArrowButton = styled.TouchableOpacity``;
 export const QuestionsCount = styled.Text``;
 
 export const FinishButton = styled.TouchableOpacity`
-  width: 50%;
+  width: fit-content;
+  padding: 0 20px;
   height: 40px;
   border-radius: 10px;
 
@@ -66,6 +82,29 @@ export const FinishButton = styled.TouchableOpacity`
   background-color: #e14741;
 `;
 
+export const SeeReultsButton = styled.TouchableOpacity`
+  width: 50%;
+  height: 40px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+
+  margin-top: 20px;
+
+  background-color: ${(props) => props.theme.colors.green};
+`;
+
 export const ButtonText = styled.Text`
   color: white;
+`;
+
+export const ButtonsContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 20px;
 `;
