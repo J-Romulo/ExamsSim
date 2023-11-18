@@ -40,7 +40,7 @@ export function SubjectDetails({ route }) {
     return (
       <S.ItemContainer
         onPress={() => {
-          navigate('question_details', { id: item.item.id });
+          navigate('question_details_subject', { id: item.item.id });
         }}>
         <S.ItemTitle>{item.item.question}</S.ItemTitle>
       </S.ItemContainer>
@@ -60,7 +60,7 @@ export function SubjectDetails({ route }) {
         <S.FieldLabel>Questões associadas</S.FieldLabel>
         <S.CreateQuestionButton
           onPress={() => {
-            navigate('create_question', { id_subject: subject?.id });
+            navigate('create_question_subject', { id_subject: subject?.id });
           }}>
           <AntDesign name="plus" size={12} color="black" />
         </S.CreateQuestionButton>

@@ -62,10 +62,26 @@ function SubjectsScreens() {
       <SubjectsStack.Screen
         options={() => ({
           headerShown: true,
+          headerTitle: 'Criar Questão',
+        })}
+        name="create_question_subject"
+        component={CreateQuestion}
+      />
+      <SubjectsStack.Screen
+        options={() => ({
+          headerShown: true,
           headerTitle: 'Detalhamento de matéria',
         })}
         name="subject_details"
         component={SubjectDetails}
+      />
+      <SubjectsStack.Screen
+        options={() => ({
+          headerShown: true,
+          headerTitle: 'Detalhamento de questão',
+        })}
+        name="question_details_subject"
+        component={QuestionDetails}
       />
     </SubjectsStack.Navigator>
   );
