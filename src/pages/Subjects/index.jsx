@@ -8,11 +8,12 @@ import { LoadingModal } from '../../components/LoadingModal';
 import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
 
-export function Subjects() {
+export function Subjects(props) {
   const { fetchSubjects, loading } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
 
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
@@ -21,6 +22,7 @@ export function Subjects() {
     const subjects = await fetchSubjects();
 
     setSubjects(subjects);
+    setFilteredSubjects(subjects);
   }
 
   useEffect(() => {
@@ -28,6 +30,16 @@ export function Subjects() {
       fetchSubjectItems();
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (subjects) {
+      const filter = subjects.filter((subjectItem) => {
+        return subjectItem.title.toUpperCase().includes(props.searchText.toUpperCase());
+      });
+
+      setFilteredSubjects(filter);
+    }
+  }, [props.searchText, subjects]);
 
   function onRefresh() {
     setRefreshing(true);
@@ -58,7 +70,7 @@ export function Subjects() {
     <Container>
       <LoadingModal isVisible={!subjects.length && loading} />
       <FlatList
-        data={subjects}
+        data={filteredSubjects}
         renderItem={RenderSubject}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={RenderEmptyListMessage}

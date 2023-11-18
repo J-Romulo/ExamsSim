@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { SearchBar } from '../components/SearchBar';
 import { Exams } from '../pages/Exams';
 import { CreateExam } from '../pages/Exams/CreateExam';
 import { SimulateExam } from '../pages/Exams/SimulateExam';
@@ -30,6 +31,8 @@ function Compt() {
 }
 
 function SubjectsScreens() {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <SubjectsStack.Navigator
       screenOptions={{
@@ -41,7 +44,13 @@ function SubjectsScreens() {
           fontWeight: 'bold',
         },
       }}>
-      <SubjectsStack.Screen name="Matérias" component={Subjects} />
+      <SubjectsStack.Screen
+        options={() => ({
+          headerRight: () => <SearchBar setText={setSearchText} />,
+        })}
+        name="Matérias">
+        {() => <Subjects searchText={searchText} />}
+      </SubjectsStack.Screen>
       <SubjectsStack.Screen
         options={() => ({
           headerShown: true,
@@ -63,6 +72,8 @@ function SubjectsScreens() {
 }
 
 function QuestionsScreens() {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <QuestionsStack.Navigator
       screenOptions={{
@@ -74,7 +85,13 @@ function QuestionsScreens() {
           fontWeight: 'bold',
         },
       }}>
-      <QuestionsStack.Screen name="Questões" component={Questions} />
+      <QuestionsStack.Screen
+        options={() => ({
+          headerRight: () => <SearchBar setText={setSearchText} />,
+        })}
+        name="Questões">
+        {() => <Questions searchText={searchText} />}
+      </QuestionsStack.Screen>
       <QuestionsStack.Screen
         options={() => ({
           headerShown: true,

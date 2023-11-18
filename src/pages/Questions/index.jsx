@@ -8,11 +8,12 @@ import { LoadingModal } from '../../components/LoadingModal';
 import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
 
-export function Questions() {
+export function Questions(props) {
   const { fetchQuestions, loading } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [questions, setQuestions] = useState([]);
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
 
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
@@ -21,6 +22,7 @@ export function Questions() {
     const questions = await fetchQuestions();
 
     setQuestions(questions);
+    setFilteredQuestions(questions);
   }
 
   useEffect(() => {
@@ -28,6 +30,16 @@ export function Questions() {
       fetchQuestionsItems();
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (questions) {
+      const filter = questions.filter((questionItem) => {
+        return String(questionItem.question).toUpperCase().includes(props.searchText.toUpperCase());
+      });
+
+      setFilteredQuestions(filter);
+    }
+  }, [props.searchText, questions]);
 
   function onRefresh() {
     setRefreshing(true);
@@ -58,7 +70,7 @@ export function Questions() {
     <Container>
       <LoadingModal isVisible={!questions.length && loading} />
       <FlatList
-        data={questions}
+        data={filteredQuestions}
         renderItem={RenderSubject}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={RenderEmptyListMessage}
