@@ -1,9 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList } from 'react-native';
 
 import * as S from './styles';
+import { EmptyContent } from '../../components/EmptyContent';
 import { LoadingModal } from '../../components/LoadingModal';
 import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
@@ -58,14 +59,6 @@ export function Subjects(props) {
     );
   }
 
-  function RenderEmptyListMessage() {
-    return (
-      <View style={{ alignItems: 'center' }}>
-        <Text>No data found</Text>
-      </View>
-    );
-  }
-
   return (
     <Container>
       <LoadingModal isVisible={!subjects.length && loading} />
@@ -73,7 +66,7 @@ export function Subjects(props) {
         data={filteredSubjects}
         renderItem={RenderSubject}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={RenderEmptyListMessage}
+        ListEmptyComponent={EmptyContent({ emptyText: 'Nenhuma matéria encontrada' })}
         onRefresh={onRefresh}
         refreshing={refreshing}
       />
