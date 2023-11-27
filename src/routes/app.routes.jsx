@@ -1,8 +1,9 @@
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Menu, MenuItem } from 'react-native-material-menu';
 
 import { SearchBar } from '../components/SearchBar';
 import { Exams } from '../pages/Exams';
@@ -13,6 +14,7 @@ import { CreateQuestion } from '../pages/Questions/CreateQuestion';
 import { QuestionDetails } from '../pages/Questions/QuestionDetails';
 import { Subjects } from '../pages/Subjects';
 import { CreateSubject } from '../pages/Subjects/CreateSubject';
+import { EditSubject } from '../pages/Subjects/EditSubject';
 import { SubjectDetails } from '../pages/Subjects/SubjectDetails';
 
 const SettingsStack = createNativeStackNavigator();
@@ -32,6 +34,7 @@ function Compt() {
 
 function SubjectsScreens() {
   const [searchText, setSearchText] = useState('');
+  const [menuOpened, setMenuOpened] = useState(false);
 
   return (
     <SubjectsStack.Navigator
@@ -51,6 +54,7 @@ function SubjectsScreens() {
         name="Matérias">
         {() => <Subjects searchText={searchText} />}
       </SubjectsStack.Screen>
+
       <SubjectsStack.Screen
         options={() => ({
           headerShown: true,
@@ -59,6 +63,16 @@ function SubjectsScreens() {
         name="create_subject"
         component={CreateSubject}
       />
+
+      <SubjectsStack.Screen
+        options={() => ({
+          headerShown: true,
+          headerTitle: 'Editar Matéria',
+        })}
+        name="edit_subject"
+        component={EditSubject}
+      />
+
       <SubjectsStack.Screen
         options={() => ({
           headerShown: true,
@@ -67,14 +81,35 @@ function SubjectsScreens() {
         name="create_question_subject"
         component={CreateQuestion}
       />
+
       <SubjectsStack.Screen
-        options={() => ({
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTitle: 'Detalhamento de matéria',
+          headerRight: () => {
+            return (
+              <View>
+                <Menu
+                  visible={menuOpened}
+                  anchor={
+                    <TouchableOpacity onPress={() => setMenuOpened(true)}>
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                    </TouchableOpacity>
+                  }
+                  onRequestClose={() => setMenuOpened(false)}>
+                  <MenuItem
+                    onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
+                    Editar
+                  </MenuItem>
+                </Menu>
+              </View>
+            );
+          },
         })}
         name="subject_details"
         component={SubjectDetails}
       />
+
       <SubjectsStack.Screen
         options={() => ({
           headerShown: true,
