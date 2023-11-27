@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'react-native';
 import { object, string } from 'yup';
 
+import * as S from './styles';
 import { TextField } from '../../../../components/TextInput';
 
 const schema = object({
@@ -51,11 +52,13 @@ export function SubjectForm({ sendData, subject }) {
         onChangeText={(text) => setValue('description', text)}
         defaultValue={getValues('description')}
       />
-      <Button
-        onPress={handleSubmit(onSubmit)}
-        title={subject ? 'Salvar Matéria' : 'Criar Matéria'}
-        color="#1969d3"
-      />
+      <S.ButtonContainer>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          title={subject ? 'Salvar Matéria' : 'Criar Matéria'}
+          color="#1969d3"
+        />
+      </S.ButtonContainer>
     </>
   );
 }
