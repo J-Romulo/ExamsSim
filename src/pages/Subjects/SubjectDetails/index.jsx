@@ -6,12 +6,12 @@ import { FlatList } from 'react-native';
 import * as S from './styles';
 import { EmptyContent } from '../../../components/EmptyContent';
 import { LoadingModal } from '../../../components/LoadingModal';
-import { Container } from '../../../global/styles/globalComponents';
+import { Container, ItemContainer } from '../../../global/styles/globalComponents';
 import { useStorage } from '../../../hooks/useStorage';
 
 export function SubjectDetails({ route }) {
   const { id } = route.params;
-  const { fetchSubject, loading } = useStorage();
+  const { fetchSubject, dissociateQuestionFromSubject, loading } = useStorage();
   const [subject, setSubject] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -36,28 +36,40 @@ export function SubjectDetails({ route }) {
     setRefreshing(false);
   }
 
+  async function dissociateQuestion(question_id) {
+    await dissociateQuestionFromSubject(subject.id, question_id);
+    fetchSubjectItem();
+  }
+
   function RenderQuestion(item) {
     return (
-      <S.ItemContainer
-        onPress={() => {
-          navigate('question_details_subject', { id: item.item.id });
-        }}>
-        <S.ItemTitle>{item.item.question}</S.ItemTitle>
-      </S.ItemContainer>
+      <>
+        <ItemContainer
+          onPress={() => {
+            navigate('question_details_subject', { id: item.item.id });
+          }}>
+          <S.ItemTitle>{item.item.question}</S.ItemTitle>
+        </ItemContainer>
+
+        <S.DeleteButton
+          onPress={() => {
+            dissociateQuestion(item.item.id);
+          }}>
+          <AntDesign name="minus" size={12} color="white" />
+        </S.DeleteButton>
+      </>
     );
   }
 
   return (
     <Container>
       <LoadingModal isVisible={loading} />
-      <S.FieldLabel>Título</S.FieldLabel>
-      <S.FieldValue>{subject?.title}</S.FieldValue>
+      <S.SubjectTitle>{subject?.title}</S.SubjectTitle>
 
-      <S.FieldLabel>Descrição</S.FieldLabel>
-      <S.FieldValue>{subject?.description}</S.FieldValue>
+      <S.SubjectDescription>{subject?.description}</S.SubjectDescription>
 
       <S.QuestionsHeader>
-        <S.FieldLabel>Questões associadas</S.FieldLabel>
+        <S.SubjectTitle>Questões associadas</S.SubjectTitle>
         <S.CreateQuestionButton
           onPress={() => {
             navigate('create_question_subject', { id_subject: subject?.id });

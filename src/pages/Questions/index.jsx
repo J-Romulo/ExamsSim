@@ -33,7 +33,7 @@ export function Questions(props) {
   }, [isFocused]);
 
   useEffect(() => {
-    if (questions) {
+    if (questions && questions.length) {
       const filter = questions.filter((questionItem) => {
         return String(questionItem.question).toUpperCase().includes(props.searchText.toUpperCase());
       });
@@ -48,7 +48,7 @@ export function Questions(props) {
     setRefreshing(false);
   }
 
-  function RenderSubject(item) {
+  function RenderQuestions(item) {
     return (
       <ItemContainer
         onPress={() => {
@@ -64,7 +64,7 @@ export function Questions(props) {
       <LoadingModal isVisible={!questions.length && loading} />
       <FlatList
         data={filteredQuestions}
-        renderItem={RenderSubject}
+        renderItem={RenderQuestions}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={EmptyContent({ emptyText: 'Nenhuma questão encontrada' })}
         onRefresh={onRefresh}
