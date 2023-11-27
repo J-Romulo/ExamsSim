@@ -32,3 +32,20 @@ export const ItemContainer = styled.TouchableOpacity`
 
   elevation: 3;
 `;
+
+export const DeleteButton = styled.TouchableOpacity`
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+  background-color: ${({ theme }) => theme.colors.red};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  right: 1px;
+`;

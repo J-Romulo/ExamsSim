@@ -12,5 +12,5 @@ export const Container = styled.View`
 export const Text = styled.Text`
   font-size: 15px;
   font-style: italic;
-  color: #595959;
+  color: ${({ theme }) => theme.colors.gray};
 `;
