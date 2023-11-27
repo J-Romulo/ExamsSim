@@ -104,6 +104,23 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function saveSubject(subject) {
+    setLoading(true);
+    try {
+      const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
+
+      const new_subjects = subjects.filter((subj) => subj.id !== subject.id);
+
+      new_subjects.push(subject);
+
+      await AsyncStorage.setItem('@subjects', JSON.stringify(new_subjects));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function dissociateQuestionFromSubject(subject_id, question_id) {
     const question = await fetchQuestion(question_id);
 
@@ -221,6 +238,7 @@ export function StorageProvider({ children }) {
         fetchSubject,
         fetchSubjectByTitle,
         addSubject,
+        saveSubject,
         fetchQuestions,
         addQuestion,
         fetchQuestion,
