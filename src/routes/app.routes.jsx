@@ -49,7 +49,9 @@ function SubjectsScreens() {
       }}>
       <SubjectsStack.Screen
         options={() => ({
-          headerRight: () => <SearchBar setText={setSearchText} />,
+          headerRight: () => (
+            <SearchBar setText={setSearchText} placeholder="Procure pela matéria..." />
+          ),
         })}
         name="Matérias">
         {() => <Subjects searchText={searchText} />}
@@ -138,7 +140,9 @@ function QuestionsScreens() {
       }}>
       <QuestionsStack.Screen
         options={() => ({
-          headerRight: () => <SearchBar setText={setSearchText} />,
+          headerRight: () => (
+            <SearchBar setText={setSearchText} placeholder="Procure pela questão..." />
+          ),
         })}
         name="Questões">
         {() => <Questions searchText={searchText} />}

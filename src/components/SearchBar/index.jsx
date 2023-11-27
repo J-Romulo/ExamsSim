@@ -16,7 +16,7 @@ export function SearchBar(props) {
       <S.Container>
         <S.TextField
           autoFocus
-          placeholder="Pesquise pela questão..."
+          placeholder={props.placeholder}
           onChangeText={(text) => {
             props.setText(text);
           }}
