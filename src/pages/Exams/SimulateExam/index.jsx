@@ -91,7 +91,7 @@ export function SimulateExam({ route }) {
     if (!hours && !minutes && !seconds) {
       if (exam?.examType === 'overall_time') {
         finishExam();
-      } else {
+      } else if (exam?.examType === 'question_time') {
         saveCurrentQuestionWithNoTime();
         Alert.alert('Sem tempo!', 'O tempo para responder essa questão acabou.');
       }
