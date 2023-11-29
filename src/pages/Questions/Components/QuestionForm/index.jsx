@@ -109,8 +109,7 @@ export function QuestionForm({ sendData, question }) {
             setValue('correct_answer', newValue);
             setCorrectAnswer(newValue);
           }}
-          value={correctAnswer}
-          defaultValue="correct_answer">
+          value={question ? Number(getValues('correct_answer')) : correctAnswer}>
           <S.Label>Alternativa correta</S.Label>
           <S.CorrectAnswerContainer>
             {fields.map((field, index) => {

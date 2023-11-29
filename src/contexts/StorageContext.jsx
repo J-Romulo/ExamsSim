@@ -195,6 +195,23 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function saveQuestion(question) {
+    setLoading(true);
+    try {
+      const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+      const new_questions = questions.filter((quest) => quest.id !== question.id);
+
+      new_questions.push(question);
+
+      await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function addExam(exam) {
     setLoading(true);
     try {
@@ -245,6 +262,7 @@ export function StorageProvider({ children }) {
         addExam,
         fetchExam,
         dissociateQuestionFromSubject,
+        saveQuestion,
         loading,
       }}>
       {children}

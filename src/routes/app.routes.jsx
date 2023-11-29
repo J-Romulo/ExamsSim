@@ -11,6 +11,7 @@ import { CreateExam } from '../pages/Exams/CreateExam';
 import { SimulateExam } from '../pages/Exams/SimulateExam';
 import { Questions } from '../pages/Questions';
 import { CreateQuestion } from '../pages/Questions/CreateQuestion';
+import { EditQuestion } from '../pages/Questions/EditQuestion';
 import { QuestionDetails } from '../pages/Questions/QuestionDetails';
 import { Subjects } from '../pages/Subjects';
 import { CreateSubject } from '../pages/Subjects/CreateSubject';
@@ -126,6 +127,7 @@ function SubjectsScreens() {
 
 function QuestionsScreens() {
   const [searchText, setSearchText] = useState('');
+  const [menuOpened, setMenuOpened] = useState(false);
 
   return (
     <QuestionsStack.Navigator
@@ -155,13 +157,42 @@ function QuestionsScreens() {
         name="create_question"
         component={CreateQuestion}
       />
+
       <QuestionsStack.Screen
-        options={() => ({
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTitle: 'Detalhamento de questão',
+          headerRight: () => {
+            return (
+              <View>
+                <Menu
+                  visible={menuOpened}
+                  anchor={
+                    <TouchableOpacity onPress={() => setMenuOpened(true)}>
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                    </TouchableOpacity>
+                  }
+                  onRequestClose={() => setMenuOpened(false)}>
+                  <MenuItem
+                    onPress={() => navigation.navigate('edit_question', { id: route.params.id })}>
+                    Editar
+                  </MenuItem>
+                </Menu>
+              </View>
+            );
+          },
         })}
         name="question_details"
         component={QuestionDetails}
+      />
+
+      <QuestionsStack.Screen
+        options={() => ({
+          headerShown: true,
+          headerTitle: 'Editar Questão',
+        })}
+        name="edit_question"
+        component={EditQuestion}
       />
     </QuestionsStack.Navigator>
   );
