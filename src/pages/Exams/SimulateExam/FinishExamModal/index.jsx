@@ -5,7 +5,6 @@ import Modal from 'react-native-modal';
 import * as S from './styles';
 import { LoadingModal } from '../../../../components/LoadingModal';
 
-
 export function FinishExamModal({ questions, isModalVisible, setModalVisible }) {
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
@@ -18,7 +17,7 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
     questions &&
       questions.length > 0 &&
       questions.forEach((question) => {
-        if (question.selectedAnswer && question.selectedAnswer == question.correct_answer)
+        if (String(question.selectedAnswer) && question.selectedAnswer == question.correct_answer)
           correctAnswersToParse++;
       });
 
@@ -76,7 +75,7 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
 
                 <S.TableColumn>
                   <S.TableData>
-                    {question.selectedAnswer ? Number(question.selectedAnswer) + 1 : null}
+                    {String(question.selectedAnswer) ? Number(question.selectedAnswer) + 1 : null}
                   </S.TableData>
                 </S.TableColumn>
 
