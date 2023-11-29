@@ -1,46 +1,51 @@
-import { useState, useEffect } from 'react'
 import { useIsFocused } from '@react-navigation/native';
-import { useStorage } from '../../../hooks/useStorage';
+import { useState, useEffect } from 'react';
+import { FlatList } from 'react-native';
+
+import * as S from './styles';
 import { LoadingModal } from '../../../components/LoadingModal';
-import * as S from './styles'
 import { Container } from '../../../global/styles/globalComponents';
+import { useStorage } from '../../../hooks/useStorage';
 
-export function QuestionDetails({ route }){
-    const { id } = route.params;
-    const {fetchQuestion, loading} = useStorage()
-    const [ question, setQuestion ] = useState()
-    const isFocused = useIsFocused();
+export function QuestionDetails({ route }) {
+  const { id } = route.params;
+  const { fetchQuestion, loading } = useStorage();
+  const [question, setQuestion] = useState();
+  const isFocused = useIsFocused();
 
-    async function fetchQuestionItem(){
-        const question = await fetchQuestion(id)
+  async function fetchQuestionItem() {
+    const question = await fetchQuestion(id);
 
-        setQuestion(question)
+    setQuestion(question);
+  }
+
+  useEffect(() => {
+    if (id) {
+      fetchQuestionItem();
     }
+  }, [isFocused, id]);
 
-    useEffect(() => {
-        if(id){
-            fetchQuestionItem()
-        }
-    }, [isFocused, id])
+  function RenderQuestion(item) {
+    const correctAnswer = Number(question.correct_answer) === Number(item.index);
 
-    return(
-        <Container>
-            <LoadingModal isVisible={loading} />
-            <S.FieldLabel>Questão</S.FieldLabel>
-            <S.FieldValue>{question?.question}</S.FieldValue>
+    return (
+      <S.ItemContainer correct={correctAnswer}>
+        <S.ItemTitle>{item.item}</S.ItemTitle>
+      </S.ItemContainer>
+    );
+  }
 
-            <S.FieldLabel>Alternativas</S.FieldLabel>
-            {
-                question?.answers.map((answer) => {
-                    return (
-                        <S.FieldValue key={answer}>{answer}</S.FieldValue>
-                    )
-                })
-            }
+  return (
+    <Container>
+      <LoadingModal isVisible={loading} />
 
-            <S.FieldLabel>Alternativa correta</S.FieldLabel>
-            <S.FieldValue>{`#${Number(question?.correct_answer)+1}`}</S.FieldValue>
+      <S.QuestionValue>{question?.question}</S.QuestionValue>
 
-        </Container>
-    )
+      <FlatList
+        data={question?.answers}
+        renderItem={RenderQuestion}
+        keyExtractor={(item) => item}
+      />
+    </Container>
+  );
 }

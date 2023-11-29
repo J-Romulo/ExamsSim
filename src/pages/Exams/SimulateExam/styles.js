@@ -34,9 +34,10 @@ const getBackgroundColor = (props) => {
 export const ItemContainer = styled.TouchableOpacity`
   width: 100%;
   height: 70px;
-  border-radius: 20px;
+  border-radius: 10px;
   border-style: solid;
   border-width: 1px;
+  border-color: ${(props) => props.theme.colors.lightGray};
 
   margin-bottom: 20px;
 
