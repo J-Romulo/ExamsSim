@@ -244,6 +244,8 @@ function QuestionsScreens() {
 }
 
 function ExamsScreens() {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <ExamsStack.Navigator
       screenOptions={{
@@ -255,7 +257,16 @@ function ExamsScreens() {
           fontWeight: 'bold',
         },
       }}>
-      <ExamsStack.Screen name="Simulados" component={Exams} />
+      <ExamsStack.Screen
+        options={() => ({
+          headerTitle: 'Simulados',
+          headerRight: () => (
+            <SearchBar setText={setSearchText} placeholder="Procure pelo simulado..." />
+          ),
+        })}
+        name="exams">
+        {() => <Exams searchText={searchText} />}
+      </ExamsStack.Screen>
       <ExamsStack.Screen
         options={() => ({
           headerShown: true,

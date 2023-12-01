@@ -261,6 +261,19 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function fetchExams() {
+    setLoading(true);
+    try {
+      const exams = JSON.parse(await AsyncStorage.getItem('@exams'));
+
+      return exams;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <StorageContext.Provider
       value={{
@@ -275,6 +288,7 @@ export function StorageProvider({ children }) {
         fetchQuestion,
         addExam,
         fetchExam,
+        fetchExams,
         dissociateQuestionFromSubject,
         saveQuestion,
         deleteQuestion,
