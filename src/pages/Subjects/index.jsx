@@ -61,7 +61,7 @@ export function Subjects(props) {
 
   return (
     <Container>
-      <LoadingModal isVisible={!subjects.length && loading} />
+      <LoadingModal isVisible={subjects.length === 0 && loading} />
       <FlatList
         data={filteredSubjects}
         renderItem={RenderSubject}

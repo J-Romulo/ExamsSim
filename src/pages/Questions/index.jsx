@@ -61,7 +61,7 @@ export function Questions(props) {
 
   return (
     <Container>
-      <LoadingModal isVisible={!questions.length && loading} />
+      <LoadingModal isVisible={questions.length === 0 && loading} />
       <FlatList
         data={filteredQuestions}
         renderItem={RenderQuestions}
