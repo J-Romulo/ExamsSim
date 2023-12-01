@@ -25,6 +25,12 @@ export function DialogModal({ state, closeModal, submit }) {
           <S.Option second={false} onPress={submit}>
             <S.BttnText>{state.mainOptMessage}</S.BttnText>
           </S.Option>
+
+          {!!state.secondOptMessage && (
+            <S.Option second onPress={closeModal}>
+              <S.BttnText second>{state.secondOptMessage}</S.BttnText>
+            </S.Option>
+          )}
         </S.OptionsContainer>
       </S.Container>
     </Modal>

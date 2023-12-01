@@ -121,6 +121,21 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function deleteSubject(subject_id) {
+    setLoading(true);
+    try {
+      const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
+
+      const new_subjects = subjects.filter((subj) => subj.id !== subject_id);
+
+      await AsyncStorage.setItem('@subjects', JSON.stringify(new_subjects));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function dissociateQuestionFromSubject(subject_id, question_id) {
     const question = await fetchQuestion(question_id);
 
@@ -171,6 +186,21 @@ export function StorageProvider({ children }) {
       const new_questions = questions.filter((quest) => quest.id !== question.id);
 
       new_questions.push(question);
+
+      await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteQuestion(question_id) {
+    setLoading(true);
+    try {
+      const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+      const new_questions = questions.filter((quest) => quest.id !== question_id);
 
       await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
     } catch (err) {
@@ -239,6 +269,7 @@ export function StorageProvider({ children }) {
         fetchSubjectByTitle,
         addSubject,
         saveSubject,
+        deleteSubject,
         fetchQuestions,
         addQuestion,
         fetchQuestion,
@@ -246,6 +277,7 @@ export function StorageProvider({ children }) {
         fetchExam,
         dissociateQuestionFromSubject,
         saveQuestion,
+        deleteQuestion,
         loading,
       }}>
       {children}

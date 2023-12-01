@@ -21,6 +21,26 @@ export function DialogModalProvider({ children }) {
     });
   }
 
+  function openTwoOptionsModal(
+    message,
+    mainOptMessage,
+    secondOptMessage,
+    onSubmit = () => {},
+    enableClose = true
+  ) {
+    dispatch({
+      type: 'SET_STATE',
+      payload: {
+        isOpen: true,
+        message,
+        mainOptMessage,
+        secondOptMessage,
+        enableClose,
+        onSubmit,
+      },
+    });
+  }
+
   function handleSubmit() {
     state.onSubmit();
 
@@ -32,7 +52,7 @@ export function DialogModalProvider({ children }) {
   }
 
   return (
-    <DialogModalContext.Provider value={{ openConfirmModal }}>
+    <DialogModalContext.Provider value={{ openConfirmModal, openTwoOptionsModal }}>
       {children}
 
       <DialogModal state={state} closeModal={closeModal} submit={handleSubmit} />

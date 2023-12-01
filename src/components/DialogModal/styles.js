@@ -1,13 +1,15 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  width: 80%;
-  height: 30%;
+  min-width: 80%;
+  width: fit-content;
+  height: fit-content;
   background-color: white;
   position: relative;
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   margin: auto;
   padding: 10px;
@@ -48,17 +50,19 @@ export const Message = styled.Text`
 
 export const OptionsContainer = styled.View`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   align-items: center;
+  column-gap: 10px;
   margin-top: 20px;
 `;
 
 export const Option = styled.TouchableOpacity`
-  background-color: #095fd9;
+  background-color: ${({ second }) => (second ? '#E0EDFF' : '#095fd9')};
   padding: 10px 2px;
-  width: 50%;
+  width: 40%;
   border-radius: 5px;
+  border: 1px solid #095fd9;
 
   display: flex;
   align-items: center;
@@ -67,5 +71,5 @@ export const Option = styled.TouchableOpacity`
 `;
 
 export const BttnText = styled.Text`
-  color: white;
+  color: ${({ second }) => (second ? '#095fd9' : 'white')};
 `;

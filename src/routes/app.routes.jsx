@@ -1,11 +1,14 @@
 import { MaterialCommunityIcons, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 
 import { SearchBar } from '../components/SearchBar';
+import { useDialogModal } from '../hooks/useDialogModal';
+import { useStorage } from '../hooks/useStorage';
 import { Exams } from '../pages/Exams';
 import { CreateExam } from '../pages/Exams/CreateExam';
 import { SimulateExam } from '../pages/Exams/SimulateExam';
@@ -34,8 +37,25 @@ function Compt() {
 }
 
 function SubjectsScreens() {
+  const { openTwoOptionsModal } = useDialogModal();
+  const { deleteSubject } = useStorage();
+  const { navigate } = useNavigation();
+
   const [searchText, setSearchText] = useState('');
   const [menuOpened, setMenuOpened] = useState(false);
+
+  function deleteSubjectById(subject_id) {
+    setMenuOpened(false);
+    openTwoOptionsModal(
+      'Tem certeza que deseja excluir permanentemente a matéria?',
+      'Sim',
+      'Cancelar',
+      async () => {
+        await deleteSubject(subject_id);
+        navigate('subjects');
+      }
+    );
+  }
 
   return (
     <SubjectsStack.Navigator
@@ -50,11 +70,12 @@ function SubjectsScreens() {
       }}>
       <SubjectsStack.Screen
         options={() => ({
+          headerTitle: 'Matérias',
           headerRight: () => (
             <SearchBar setText={setSearchText} placeholder="Procure pela matéria..." />
           ),
         })}
-        name="Matérias">
+        name="subjects">
         {() => <Subjects searchText={searchText} />}
       </SubjectsStack.Screen>
 
@@ -104,6 +125,9 @@ function SubjectsScreens() {
                     onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
                     Editar
                   </MenuItem>
+                  <MenuItem onPress={() => deleteSubjectById(route.params.id)}>
+                    Excluir matéria
+                  </MenuItem>
                 </Menu>
               </View>
             );
@@ -126,8 +150,25 @@ function SubjectsScreens() {
 }
 
 function QuestionsScreens() {
+  const { openTwoOptionsModal } = useDialogModal();
+  const { deleteQuestion } = useStorage();
+  const { navigate } = useNavigation();
+
   const [searchText, setSearchText] = useState('');
   const [menuOpened, setMenuOpened] = useState(false);
+
+  function deleteQuestionById(question_id) {
+    setMenuOpened(false);
+    openTwoOptionsModal(
+      'Tem certeza que deseja excluir permanentemente a questão?',
+      'Sim',
+      'Cancelar',
+      async () => {
+        await deleteQuestion(question_id);
+        navigate('questions');
+      }
+    );
+  }
 
   return (
     <QuestionsStack.Navigator
@@ -142,11 +183,12 @@ function QuestionsScreens() {
       }}>
       <QuestionsStack.Screen
         options={() => ({
+          headerTitle: 'Questões',
           headerRight: () => (
             <SearchBar setText={setSearchText} placeholder="Procure pela questão..." />
           ),
         })}
-        name="Questões">
+        name="questions">
         {() => <Questions searchText={searchText} />}
       </QuestionsStack.Screen>
       <QuestionsStack.Screen
@@ -176,6 +218,9 @@ function QuestionsScreens() {
                   <MenuItem
                     onPress={() => navigation.navigate('edit_question', { id: route.params.id })}>
                     Editar
+                  </MenuItem>
+                  <MenuItem onPress={() => deleteQuestionById(route.params.id)}>
+                    Excluir questão
                   </MenuItem>
                 </Menu>
               </View>

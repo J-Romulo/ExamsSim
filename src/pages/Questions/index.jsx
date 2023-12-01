@@ -20,15 +20,15 @@ export function Questions(props) {
   const isFocused = useIsFocused();
 
   async function fetchQuestionsItems() {
-    const questions = await fetchQuestions();
+    const questions_fetched = await fetchQuestions();
 
-    setQuestions(questions);
-    setFilteredQuestions(questions);
+    setQuestions(questions_fetched);
+    setFilteredQuestions(questions_fetched);
   }
 
   useEffect(() => {
     if (isFocused) {
-      fetchQuestionsItems();
+      onRefresh();
     }
   }, [isFocused]);
 
