@@ -7,17 +7,21 @@ import { useStorage } from '../../../hooks/useStorage';
 import { QuestionForm } from '../Components/QuestionForm';
 
 export function EditQuestion({ route }) {
+  const [loading, setLoading] = useState(false);
+
   const { id } = route.params;
   const [question, setQuestion] = useState();
-  const { saveQuestion, fetchQuestion, loading } = useStorage();
+  const { saveQuestion, fetchQuestion } = useStorage();
 
   const isFocused = useIsFocused();
   const { navigate } = useNavigation();
 
   async function fetchQuestionItem() {
+    setLoading(true);
     const question = await fetchQuestion(id);
 
     setQuestion(question);
+    setLoading(false);
   }
 
   useEffect(() => {

@@ -10,8 +10,10 @@ import { Container, ItemContainer } from '../../../global/styles/globalComponent
 import { useStorage } from '../../../hooks/useStorage';
 
 export function SubjectDetails({ route }) {
+  const [loading, setLoading] = useState(false);
+
   const { id } = route.params;
-  const { fetchSubject, dissociateQuestionFromSubject, loading } = useStorage();
+  const { fetchSubject, dissociateQuestionFromSubject } = useStorage();
   const [subject, setSubject] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -19,9 +21,11 @@ export function SubjectDetails({ route }) {
   const { navigate } = useNavigation();
 
   async function fetchSubjectItem() {
+    setLoading(true);
     const subject = await fetchSubject(id);
 
     setSubject(subject);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -37,6 +41,7 @@ export function SubjectDetails({ route }) {
   }
 
   async function dissociateQuestion(question_id) {
+    setLoading(true);
     await dissociateQuestionFromSubject(subject.id, question_id);
     fetchSubjectItem();
   }

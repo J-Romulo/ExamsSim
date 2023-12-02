@@ -12,8 +12,9 @@ import { useCountdown } from '../../../hooks/useCountdown';
 import { useStorage } from '../../../hooks/useStorage';
 
 export function SimulateExam({ route }) {
+  const [loading, setLoading] = useState(false);
   const { id } = route.params;
-  const { fetchExam, fetchSubjectByTitle, loading } = useStorage();
+  const { fetchExam, fetchSubjectByTitle } = useStorage();
   const [exam, setExam] = useState();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState();
@@ -31,6 +32,7 @@ export function SimulateExam({ route }) {
   const { goBack } = useNavigation();
 
   async function fetchExamItem() {
+    setLoading(true);
     const exam = await fetchExam(id);
 
     const questions = await Promise.all(
@@ -42,6 +44,7 @@ export function SimulateExam({ route }) {
     setExam(exam);
     setQuestions(questions.flat());
     setCurrentQuestion(questions.flat()[0]);
+    setLoading(false);
   }
 
   async function fetchQuestions(subject_id) {

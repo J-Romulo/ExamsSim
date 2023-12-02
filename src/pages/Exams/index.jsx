@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
 import { EmptyContent } from '../../components/EmptyContent';
@@ -10,7 +11,10 @@ import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
 
 export function Exams(props) {
-  const { fetchExams, loading } = useStorage();
+  const theme = useTheme();
+
+  const [loading, setLoading] = useState(false);
+  const { fetchExams } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [exams, setExams] = useState([]);
@@ -20,14 +24,16 @@ export function Exams(props) {
   const isFocused = useIsFocused();
 
   async function fetchExamItems() {
+    setLoading(true);
     const exams_fetched = await fetchExams();
 
     setExams(exams_fetched);
     setFilteredExams(exams_fetched);
+    setLoading(false);
   }
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && (!exams.length || props.toUpdate)) {
       onRefresh();
     }
   }, [isFocused]);
@@ -61,7 +67,7 @@ export function Exams(props) {
 
   return (
     <Container>
-      <LoadingModal isVisible={exams.length === 0 && loading} />
+      <LoadingModal isVisible={!filteredExams.length && loading} />
       <FlatList
         data={filteredExams}
         renderItem={RenderExams}
@@ -74,7 +80,7 @@ export function Exams(props) {
         onPress={() => {
           navigate('create_exam');
         }}>
-        <AntDesign name="plus" size={24} color="black" />
+        <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
       </S.CreateButton>
     </Container>
   );

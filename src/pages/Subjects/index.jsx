@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
 import * as S from './styles';
 import { EmptyContent } from '../../components/EmptyContent';
@@ -10,7 +11,11 @@ import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
 
 export function Subjects(props) {
-  const { fetchSubjects, loading } = useStorage();
+  const theme = useTheme();
+
+  const [loading, setLoading] = useState(false);
+
+  const { fetchSubjects } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [subjects, setSubjects] = useState([]);
@@ -20,15 +25,17 @@ export function Subjects(props) {
   const isFocused = useIsFocused();
 
   async function fetchSubjectItems() {
+    setLoading(true);
     const subjects = await fetchSubjects();
 
     setSubjects(subjects);
     setFilteredSubjects(subjects);
+    setLoading(false);
   }
 
   useEffect(() => {
     if (isFocused) {
-      fetchSubjectItems();
+      onRefresh();
     }
   }, [isFocused]);
 
@@ -61,7 +68,7 @@ export function Subjects(props) {
 
   return (
     <Container>
-      <LoadingModal isVisible={subjects.length === 0 && loading} />
+      <LoadingModal isVisible={!filteredSubjects.length && loading} />
       <FlatList
         data={filteredSubjects}
         renderItem={RenderSubject}
@@ -74,7 +81,7 @@ export function Subjects(props) {
         onPress={() => {
           navigate('create_subject');
         }}>
-        <AntDesign name="plus" size={24} color="black" />
+        <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
       </S.CreateButton>
     </Container>
   );

@@ -36,6 +36,8 @@ const schema = object({
 });
 
 export function CreateExam() {
+  const [loading, setLoading] = useState(false);
+
   const [valueDropdown, setValueDropdown] = useState('no_time');
   const [dropDownItems, setDropDownItems] = useState([
     { label: 'Sem tempo', value: 'no_time' },
@@ -49,7 +51,7 @@ export function CreateExam() {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(1);
 
-  const { fetchSubjects, addExam, loading } = useStorage();
+  const { fetchSubjects, addExam } = useStorage();
   const {
     register,
     setValue,
@@ -80,7 +82,9 @@ export function CreateExam() {
       ...data,
     };
 
+    setLoading(true);
     await addExam(exam);
+    setLoading(false);
 
     dispatch(StackActions.replace('simulate_exam', { id: exam.id }));
   }
@@ -99,7 +103,9 @@ export function CreateExam() {
       setSubjectItems(subjects_parsed);
     }
 
+    setLoading(true);
     fetchSubjectsItems();
+    setLoading(false);
   }, []);
 
   function handleChangeTime(values) {

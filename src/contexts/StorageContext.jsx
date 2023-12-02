@@ -1,26 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useState } from 'react';
+import React, { createContext } from 'react';
 
 export const StorageContext = createContext({});
 
 export function StorageProvider({ children }) {
-  const [loading, setLoading] = useState(false);
-
   async function fetchSubjects() {
-    setLoading(true);
     try {
       const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
       return subjects;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function fetchSubject(subject_id) {
-    setLoading(true);
     try {
       const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
@@ -46,13 +40,10 @@ export function StorageProvider({ children }) {
       return subject_formatted;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function fetchSubjectByTitle(subject_title) {
-    setLoading(true);
     try {
       const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
@@ -78,14 +69,11 @@ export function StorageProvider({ children }) {
       return subject_formatted;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function addSubject(subject) {
     try {
-      setLoading(true);
       let subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
       if (subjects) {
@@ -99,13 +87,10 @@ export function StorageProvider({ children }) {
       return subjects;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function saveSubject(subject) {
-    setLoading(true);
     try {
       const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
@@ -116,13 +101,10 @@ export function StorageProvider({ children }) {
       await AsyncStorage.setItem('@subjects', JSON.stringify(new_subjects));
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function deleteSubject(subject_id) {
-    setLoading(true);
     try {
       const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
 
@@ -131,8 +113,6 @@ export function StorageProvider({ children }) {
       await AsyncStorage.setItem('@subjects', JSON.stringify(new_subjects));
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -145,20 +125,16 @@ export function StorageProvider({ children }) {
   }
 
   async function fetchQuestions() {
-    setLoading(true);
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
 
       return questions;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function addQuestion(question) {
-    setLoading(true);
     try {
       let questions = JSON.parse(await AsyncStorage.getItem('@questions'));
 
@@ -173,13 +149,10 @@ export function StorageProvider({ children }) {
       return questions;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function saveQuestion(question) {
-    setLoading(true);
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
 
@@ -190,13 +163,10 @@ export function StorageProvider({ children }) {
       await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function deleteQuestion(question_id) {
-    setLoading(true);
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
 
@@ -205,13 +175,10 @@ export function StorageProvider({ children }) {
       await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function fetchQuestion(question_id) {
-    setLoading(true);
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
 
@@ -220,13 +187,10 @@ export function StorageProvider({ children }) {
       return question;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function addExam(exam) {
-    setLoading(true);
     try {
       let exams = JSON.parse(await AsyncStorage.getItem('@exams'));
 
@@ -241,13 +205,10 @@ export function StorageProvider({ children }) {
       return exams;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function fetchExam(exam_id) {
-    setLoading(true);
     try {
       const exams = JSON.parse(await AsyncStorage.getItem('@exams'));
 
@@ -256,21 +217,16 @@ export function StorageProvider({ children }) {
       return exam;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
   async function fetchExams() {
-    setLoading(true);
     try {
       const exams = JSON.parse(await AsyncStorage.getItem('@exams'));
 
       return exams;
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -292,7 +248,6 @@ export function StorageProvider({ children }) {
         dissociateQuestionFromSubject,
         saveQuestion,
         deleteQuestion,
-        loading,
       }}>
       {children}
     </StorageContext.Provider>

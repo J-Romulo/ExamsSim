@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
 import { EmptyContent } from '../../components/EmptyContent';
@@ -10,7 +11,10 @@ import { Container, ItemContainer } from '../../global/styles/globalComponents';
 import { useStorage } from '../../hooks/useStorage';
 
 export function Questions(props) {
-  const { fetchQuestions, loading } = useStorage();
+  const theme = useTheme();
+
+  const [loading, setLoading] = useState(false);
+  const { fetchQuestions } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [questions, setQuestions] = useState([]);
@@ -20,10 +24,12 @@ export function Questions(props) {
   const isFocused = useIsFocused();
 
   async function fetchQuestionsItems() {
+    setLoading(true);
     const questions_fetched = await fetchQuestions();
 
     setQuestions(questions_fetched);
     setFilteredQuestions(questions_fetched);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -61,7 +67,7 @@ export function Questions(props) {
 
   return (
     <Container>
-      <LoadingModal isVisible={questions.length === 0 && loading} />
+      <LoadingModal isVisible={!filteredQuestions.length && loading} />
       <FlatList
         data={filteredQuestions}
         renderItem={RenderQuestions}
@@ -74,7 +80,7 @@ export function Questions(props) {
         onPress={() => {
           navigate('create_question');
         }}>
-        <AntDesign name="plus" size={24} color="black" />
+        <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
       </S.CreateButton>
     </Container>
   );

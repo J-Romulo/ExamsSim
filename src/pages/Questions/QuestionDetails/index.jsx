@@ -8,15 +8,19 @@ import { Container } from '../../../global/styles/globalComponents';
 import { useStorage } from '../../../hooks/useStorage';
 
 export function QuestionDetails({ route }) {
+  const [loading, setLoading] = useState(false);
+
   const { id } = route.params;
-  const { fetchQuestion, loading } = useStorage();
+  const { fetchQuestion } = useStorage();
   const [question, setQuestion] = useState();
   const isFocused = useIsFocused();
 
   async function fetchQuestionItem() {
+    setLoading(true);
     const question = await fetchQuestion(id);
 
     setQuestion(question);
+    setLoading(false);
   }
 
   useEffect(() => {

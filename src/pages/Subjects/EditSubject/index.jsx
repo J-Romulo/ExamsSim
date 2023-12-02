@@ -7,17 +7,21 @@ import { useStorage } from '../../../hooks/useStorage';
 import { SubjectForm } from '../Components/SubjectForm';
 
 export function EditSubject({ route }) {
+  const [loading, setLoading] = useState(false);
+
   const { id } = route.params;
   const [subject, setSubject] = useState();
-  const { saveSubject, fetchSubject, loading } = useStorage();
+  const { saveSubject, fetchSubject } = useStorage();
 
   const isFocused = useIsFocused();
   const { navigate } = useNavigation();
 
   async function fetchSubjectItem() {
+    setLoading(true);
     const subject = await fetchSubject(id);
 
     setSubject(subject);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -32,8 +36,9 @@ export function EditSubject({ route }) {
       ...data,
     };
 
+    setLoading(true);
     await saveSubject(edited_subject);
-
+    setLoading(false);
     navigate('subject_details', { id: edited_subject.id });
   }
 
