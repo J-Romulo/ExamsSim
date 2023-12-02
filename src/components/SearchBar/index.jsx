@@ -1,9 +1,11 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useState } from 'react';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
 
 export function SearchBar(props) {
+  const theme = useTheme();
   const [barOpened, setBarOpened] = useState(false);
 
   function closeBar() {
@@ -23,7 +25,7 @@ export function SearchBar(props) {
         />
 
         <S.CreateButton onPress={closeBar}>
-          <FontAwesome name="close" size={24} color="white" />
+          <FontAwesome name="close" size={24} color={`${theme.colors.background_surface}`} />
         </S.CreateButton>
       </S.Container>
     );
@@ -31,7 +33,7 @@ export function SearchBar(props) {
 
   return (
     <S.CreateButton onPress={() => setBarOpened(true)}>
-      <FontAwesome name="search" size={24} color="white" />
+      <FontAwesome name="search" size={24} color={`${theme.colors.background_surface}`} />
     </S.CreateButton>
   );
 }

@@ -14,7 +14,7 @@ export const TextField = styled.TextInput`
   padding: 10px;
   border-width: 1px;
   border-radius: 10px;
-  border-color: white;
+  border-color: ${({ theme }) => theme.colors.background_surface};
   font-size: 15px;
 `;
 

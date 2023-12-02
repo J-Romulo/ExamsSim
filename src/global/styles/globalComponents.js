@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   padding: 10px 20px 15px 20px;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const ItemContainer = styled.TouchableOpacity`
@@ -11,7 +11,7 @@ export const ItemContainer = styled.TouchableOpacity`
   height: 90px;
 
   border-radius: 3px;
-  border-left-color: ${({ theme }) => theme.colors.primary};
+  border-left-color: ${({ theme }) => theme.colors.border_color};
   border-left-width: 4px;
 
   margin-bottom: 20px;
@@ -20,7 +20,7 @@ export const ItemContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.card_background};
 
   shadowcolor: '#000';
   shadowoffset: {

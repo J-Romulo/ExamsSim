@@ -3,8 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
+import { useTheme } from 'styled-components';
 
 import { SearchBar } from '../components/SearchBar';
 import { useDialogModal } from '../hooks/useDialogModal';
@@ -16,6 +17,7 @@ import { Questions } from '../pages/Questions';
 import { CreateQuestion } from '../pages/Questions/CreateQuestion';
 import { EditQuestion } from '../pages/Questions/EditQuestion';
 import { QuestionDetails } from '../pages/Questions/QuestionDetails';
+import { Settings } from '../pages/Settings';
 import { Subjects } from '../pages/Subjects';
 import { CreateSubject } from '../pages/Subjects/CreateSubject';
 import { EditSubject } from '../pages/Subjects/EditSubject';
@@ -28,15 +30,8 @@ const QuestionsStack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-function Compt() {
-  return (
-    <View>
-      <Text>Teste</Text>
-    </View>
-  );
-}
-
 function SubjectsScreens() {
+  const theme = useTheme();
   const { openTwoOptionsModal } = useDialogModal();
   const { deleteSubject } = useStorage();
   const { navigate } = useNavigation();
@@ -61,9 +56,9 @@ function SubjectsScreens() {
     <SubjectsStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#095FD9',
+          backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: '#fff',
+        headerTintColor: theme.colors.background_surface,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -114,10 +109,15 @@ function SubjectsScreens() {
             return (
               <View>
                 <Menu
+                  style={{ backgroundColor: theme.colors.background_surface }}
                   visible={menuOpened}
                   anchor={
                     <TouchableOpacity onPress={() => setMenuOpened(true)}>
-                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                      <Entypo
+                        name="dots-three-vertical"
+                        size={22}
+                        color={theme.colors.background_surface}
+                      />
                     </TouchableOpacity>
                   }
                   onRequestClose={() => setMenuOpened(false)}>
@@ -150,6 +150,7 @@ function SubjectsScreens() {
 }
 
 function QuestionsScreens() {
+  const theme = useTheme();
   const { openTwoOptionsModal } = useDialogModal();
   const { deleteQuestion } = useStorage();
   const { navigate } = useNavigation();
@@ -174,9 +175,9 @@ function QuestionsScreens() {
     <QuestionsStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#095FD9',
+          backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: '#fff',
+        headerTintColor: theme.colors.background_surface,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -208,10 +209,15 @@ function QuestionsScreens() {
             return (
               <View>
                 <Menu
+                  style={{ backgroundColor: theme.colors.background_surface }}
                   visible={menuOpened}
                   anchor={
                     <TouchableOpacity onPress={() => setMenuOpened(true)}>
-                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                      <Entypo
+                        name="dots-three-vertical"
+                        size={22}
+                        color={theme.colors.background_surface}
+                      />
                     </TouchableOpacity>
                   }
                   onRequestClose={() => setMenuOpened(false)}>
@@ -244,15 +250,16 @@ function QuestionsScreens() {
 }
 
 function ExamsScreens() {
+  const theme = useTheme();
   const [searchText, setSearchText] = useState('');
 
   return (
     <ExamsStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#095FD9',
+          backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: '#fff',
+        headerTintColor: theme.colors.background_surface,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -288,23 +295,36 @@ function ExamsScreens() {
 }
 
 function SettingsScreens() {
+  const theme = useTheme();
   return (
-    <SettingsStack.Navigator>
-      <ExamsStack.Screen name="Configurações" component={Compt} />
+    <SettingsStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.colors.nav_background,
+        },
+        headerTintColor: theme.colors.background_surface,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+      <ExamsStack.Screen name="Configurações" component={Settings} />
     </SettingsStack.Navigator>
   );
 }
 
 export default function AppRoutes() {
+  const theme = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#095FD9',
-        tabBarInactiveTintColor: '#FFF',
-        tabBarActiveBackgroundColor: '#FFF',
-        tabBarInactiveBackgroundColor: '#095FD9',
+        tabBarActiveTintColor: theme.colors.nav_background,
+        tabBarInactiveTintColor: theme.colors.background_surface,
+        tabBarActiveBackgroundColor: theme.colors.background_surface,
+        tabBarInactiveBackgroundColor: theme.colors.nav_background,
         tabBarStyle: {
           height: 60,
+          borderColor: theme.colors.background,
         },
         tabBarLabelStyle: {
           fontWeight: '500',

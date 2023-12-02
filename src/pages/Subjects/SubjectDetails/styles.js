@@ -3,12 +3,12 @@ import styled from 'styled-components/native';
 export const SubjectTitle = styled.Text`
   font-size: 20px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary_text};
 `;
 
 export const SubjectDescription = styled.Text`
   font-size: 16px;
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.secondary_text};
 `;
 
 export const QuestionsHeader = styled.View`
@@ -28,7 +28,7 @@ export const CreateQuestionButton = styled.TouchableOpacity`
   border-style: solid;
   border-color: gray;
   border-width: 1px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.buttons_background};
 
   display: flex;
   align-items: center;
@@ -51,7 +51,7 @@ export const ItemContainer = styled.TouchableOpacity`
 
 export const ItemTitle = styled.Text`
   font-size: 20px;
-  color: black;
+  color: ${({ theme }) => theme.colors.text_on_background};
 `;
 
 export const DeleteButton = styled.TouchableOpacity`
@@ -59,7 +59,7 @@ export const DeleteButton = styled.TouchableOpacity`
   height: 25px;
   border-radius: 50px;
   border-style: solid;
-  border-color: white;
+  border-color: ${({ theme }) => theme.colors.buttons_background};
   border-width: 1px;
   background-color: ${({ theme }) => theme.colors.red};
 

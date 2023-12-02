@@ -11,7 +11,7 @@ export const FieldValue = styled.Text`
 export const QuestionValue = styled.Text`
   font-size: 25px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary_text};
   margin-bottom: 20px;
 `;
 
@@ -22,28 +22,14 @@ export const QuestionsHeader = styled.View`
   flex-direction: row;
 `;
 
-export const CreateQuestionButton = styled.TouchableOpacity`
-  width: 30px;
-  height: 30px;
-  border-radius: 50px;
-  border-style: solid;
-  border-color: gray;
-  border-width: 1px;
-  background-color: white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const getBackgroundColor = (props) => {
   switch (true) {
     case props.correct:
       return props.theme.colors.green;
     case props.disabled:
-      return 'whitesmoke';
+      return props.theme.colors.disabled_card_background;
     default:
-      return 'white';
+      return props.theme.colors.card_background;
   }
 };
 

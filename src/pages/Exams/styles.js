@@ -7,7 +7,7 @@ export const CreateButton = styled.TouchableOpacity`
   border-style: solid;
   border-color: gray;
   border-width: 1px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.card_background};
 
   position: absolute;
 
