@@ -4,9 +4,6 @@ export const FormContainer = styled.View`
   display: flex;
   height: 100%;
 `;
-export const Label = styled.Text`
-  font-size: 18px;
-`;
 
 export const TimeInput = styled.View`
   width: 70%;
@@ -16,8 +13,12 @@ export const TimeInput = styled.View`
 
 export const ErrorMessage = styled.Text`
   font-size: 13px;
-  color: red;
+  color: ${({ theme }) => theme.colors.red};
 `;
 export const ButtonContainer = styled.View`
   margin-top: auto;
+`;
+
+export const DropdownFieldContainer = styled.View`
+  margin-bottom: 18px;
 `;

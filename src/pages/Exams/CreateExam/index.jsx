@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from 'react-native';
 import { TimePicker } from 'react-native-simple-time-picker';
+import { useTheme } from 'styled-components';
 import { uid } from 'uid';
 import { number, object, string, array, mixed } from 'yup';
 
@@ -11,7 +12,7 @@ import * as S from './styles';
 import { DropdownSelect } from '../../../components/DropdownSelect';
 import { LoadingModal } from '../../../components/LoadingModal';
 import { TextField } from '../../../components/TextInput';
-import { Container } from '../../../global/styles/globalComponents';
+import { Container, Label } from '../../../global/styles/globalComponents';
 import { useStorage } from '../../../hooks/useStorage';
 
 const schema = object({
@@ -36,6 +37,8 @@ const schema = object({
 });
 
 export function CreateExam() {
+  const theme = useTheme();
+
   const [loading, setLoading] = useState(false);
 
   const [valueDropdown, setValueDropdown] = useState('no_time');
@@ -143,42 +146,52 @@ export function CreateExam() {
           onChangeText={(text) => setValue('description', text)}
         />
 
-        <S.Label>Tipo de simulado</S.Label>
-        <DropdownSelect
-          value={valueDropdown}
-          setValue={(value) => handleChangeExamType(value)}
-          values={dropDownItems}
-          setItems={setDropDownItems}
-        />
+        <S.DropdownFieldContainer>
+          <Label>Tipo de simulado</Label>
+          <DropdownSelect
+            value={valueDropdown}
+            setValue={(value) => handleChangeExamType(value)}
+            values={dropDownItems}
+            closeAfterSelecting
+            setItems={setDropDownItems}
+          />
 
-        {(valueDropdown === 'overall_time' || valueDropdown === 'question_time') && (
-          <>
-            <S.Label>
-              {valueDropdown === 'overall_time' ? 'Tempo do simulado' : 'Tempo de cada questão'}
-            </S.Label>
-            <S.TimeInput>
-              <TimePicker hours={hours} minutes={minutes} onChange={handleChangeTime} />
-            </S.TimeInput>
-            <S.ErrorMessage>{errors?.hour?.message}</S.ErrorMessage>
-            <S.ErrorMessage>{errors?.minute?.message}</S.ErrorMessage>
-          </>
-        )}
+          {(valueDropdown === 'overall_time' || valueDropdown === 'question_time') && (
+            <>
+              <Label>
+                {valueDropdown === 'overall_time' ? 'Tempo do simulado' : 'Tempo de cada questão'}
+              </Label>
+              <S.TimeInput>
+                <TimePicker hours={hours} minutes={minutes} onChange={handleChangeTime} />
+              </S.TimeInput>
+              <S.ErrorMessage>{errors?.hour?.message}</S.ErrorMessage>
+              <S.ErrorMessage>{errors?.minute?.message}</S.ErrorMessage>
+            </>
+          )}
+        </S.DropdownFieldContainer>
 
-        <S.Label>Questões</S.Label>
-        <DropdownSelect
-          value={valueSubject}
-          setValue={setValueSubject}
-          values={subjectItems}
-          setItems={setSubjectItems}
-          multiple
-          zIndex={3000}
-          zIndexInverse={1000}
-          placeholder="Selecione múltiplos itens"
-        />
-        <S.ErrorMessage>{errors?.subjects?.message}</S.ErrorMessage>
+        <S.DropdownFieldContainer>
+          <Label>Questões</Label>
+          <DropdownSelect
+            value={valueSubject}
+            setValue={setValueSubject}
+            values={subjectItems}
+            setItems={setSubjectItems}
+            error={!!errors?.subjects?.message}
+            multiple
+            zIndex={3000}
+            zIndexInverse={1000}
+            placeholder="Selecione múltiplos itens"
+          />
+          <S.ErrorMessage>{errors?.subjects?.message}</S.ErrorMessage>
+        </S.DropdownFieldContainer>
 
         <S.ButtonContainer>
-          <Button onPress={handleSubmit(onSubmit)} title="Criar simulado" color="#1969d3" />
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            title="Criar simulado"
+            color={theme.colors.primary}
+          />
         </S.ButtonContainer>
       </S.FormContainer>
     </Container>

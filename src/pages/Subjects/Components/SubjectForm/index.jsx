@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from 'react-native';
+import { useTheme } from 'styled-components';
 import { object, string } from 'yup';
 
 import * as S from './styles';
@@ -13,6 +14,8 @@ const schema = object({
 });
 
 export function SubjectForm({ sendData, subject }) {
+  const theme = useTheme();
+
   const {
     register,
     setValue,
@@ -56,7 +59,7 @@ export function SubjectForm({ sendData, subject }) {
         <Button
           onPress={handleSubmit(onSubmit)}
           title={subject ? 'Salvar Matéria' : 'Criar Matéria'}
-          color="#1969d3"
+          color={theme.colors.primary}
         />
       </S.ButtonContainer>
     </>

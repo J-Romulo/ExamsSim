@@ -7,6 +7,7 @@ export const FieldLabel = styled.Text`
 
 export const FieldValue = styled.Text`
   font-size: 16px;
+  color: ${({ theme }) => theme.colors.secondary_text};
 `;
 
 export const QuestionsHeader = styled.View`
@@ -14,6 +15,7 @@ export const QuestionsHeader = styled.View`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
+  margin-top: 15px;
 `;
 
 const getBackgroundColor = (props) => {
@@ -25,9 +27,9 @@ const getBackgroundColor = (props) => {
     case props.selected:
       return props.theme.colors.primary;
     case props.disabled:
-      return 'whitesmoke';
+      return props.theme.colors.disabled_card_background;
     default:
-      return 'white';
+      return props.theme.colors.card_background;
   }
 };
 
@@ -50,7 +52,7 @@ export const ItemContainer = styled.TouchableOpacity`
 
 export const ItemTitle = styled.Text`
   font-size: 20px;
-  color: black;
+  color: ${(props) => props.theme.colors.text_on_background};
 `;
 
 export const ExamHeader = styled.View`
@@ -65,7 +67,9 @@ export const ExamHeader = styled.View`
 
 export const ArrowButton = styled.TouchableOpacity``;
 
-export const QuestionsCount = styled.Text``;
+export const QuestionsCount = styled.Text`
+  color: ${(props) => props.theme.colors.text_on_background};
+`;
 
 export const FinishButton = styled.TouchableOpacity`
   width: fit-content;
@@ -80,7 +84,7 @@ export const FinishButton = styled.TouchableOpacity`
 
   margin-top: 20px;
 
-  background-color: #e14741;
+  background-color: ${(props) => props.theme.colors.red};
 `;
 
 export const SeeReultsButton = styled.TouchableOpacity`
@@ -99,7 +103,7 @@ export const SeeReultsButton = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: white;
+  color: ${(props) => props.theme.colors.background_surface};
 `;
 
 export const ButtonsContainer = styled.View`

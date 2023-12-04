@@ -2,16 +2,19 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { FlatList, Alert } from 'react-native';
+import { useTheme } from 'styled-components';
 
 import { FinishExamModal } from './FinishExamModal';
 import * as S from './styles';
 import { CountdownTimer } from '../../../components/CountdownTimer';
 import { LoadingModal } from '../../../components/LoadingModal';
-import { Container } from '../../../global/styles/globalComponents';
+import { Container, Label } from '../../../global/styles/globalComponents';
 import { useCountdown } from '../../../hooks/useCountdown';
 import { useStorage } from '../../../hooks/useStorage';
 
 export function SimulateExam({ route }) {
+  const theme = useTheme();
+
   const [loading, setLoading] = useState(false);
   const { id } = route.params;
   const { fetchExam, fetchSubjectByTitle } = useStorage();
@@ -202,7 +205,7 @@ export function SimulateExam({ route }) {
 
       <S.ExamHeader>
         <S.ArrowButton onPress={lastQuestion}>
-          <AntDesign name="arrowleft" size={32} color="black" />
+          <AntDesign name="arrowleft" size={32} color={theme.colors.text_on_background} />
         </S.ArrowButton>
 
         <S.QuestionsCount>{`${currentQuestionindex + 1}/${questions.length}`}</S.QuestionsCount>
@@ -212,16 +215,16 @@ export function SimulateExam({ route }) {
         )}
 
         <S.ArrowButton onPress={nextQuestion}>
-          <AntDesign name="arrowright" size={32} color="black" />
+          <AntDesign name="arrowright" size={32} color={theme.colors.text_on_background} />
         </S.ArrowButton>
       </S.ExamHeader>
 
       <LoadingModal isVisible={loading} />
-      <S.FieldLabel>Questão</S.FieldLabel>
+      <Label>Questão</Label>
       <S.FieldValue>{currentQuestion.question}</S.FieldValue>
 
       <S.QuestionsHeader>
-        <S.FieldLabel>Alternativas</S.FieldLabel>
+        <Label>Alternativas</Label>
       </S.QuestionsHeader>
 
       <FlatList
@@ -234,7 +237,7 @@ export function SimulateExam({ route }) {
         <S.ButtonsContainer>
           <S.FinishButton
             onPress={() => setResultModalVisible(true)}
-            style={{ backgroundColor: '#1969d3' }}>
+            style={{ backgroundColor: theme.colors.primary }}>
             <S.ButtonText>Ver resultados</S.ButtonText>
           </S.FinishButton>
 

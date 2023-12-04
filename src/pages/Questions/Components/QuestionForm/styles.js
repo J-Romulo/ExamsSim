@@ -16,11 +16,6 @@ export const AnswersHeader = styled.View`
   flex-direction: row;
 `;
 
-export const Label = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-`;
-
 export const AddAnswerButton = styled.TouchableOpacity`
   width: 30px;
   height: 30px;
@@ -28,11 +23,12 @@ export const AddAnswerButton = styled.TouchableOpacity`
   border-style: solid;
   border-color: gray;
   border-width: 1px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.card_background};
 
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 1px;
 `;
 
 export const CorrectAnswerContainer = styled.View`
@@ -50,4 +46,10 @@ export const ErrorMessage = styled.Text`
 export const RadioButtonContainer = styled.View`
   display: flex;
   align-items: center;
+`;
+
+export const RadioButtonLabel = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.secondary_text};
 `;

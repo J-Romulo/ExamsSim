@@ -5,4 +5,6 @@ export const TimerContainer = styled.View`
   flex-direction: row;
 `;
 
-export const Time = styled.Text``;
+export const Time = styled.Text`
+  color: ${(props) => props.theme.colors.text_on_background};
+`;

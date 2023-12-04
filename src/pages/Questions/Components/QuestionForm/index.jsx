@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button, View, ScrollView } from 'react-native';
 import { RadioButton, Text } from 'react-native-paper';
+import { useTheme } from 'styled-components';
 import * as Yup from 'yup';
 import { object, string, array } from 'yup';
 
 import * as S from './styles';
 import { TextField } from '../../../../components/TextInput';
-import { DeleteButton } from '../../../../global/styles/globalComponents';
+import { DeleteButton, Label } from '../../../../global/styles/globalComponents';
 
 const schema = object({
   question: string().required('O campo de título da questão não pode ser vazio.'),
@@ -30,6 +31,8 @@ const schema = object({
 });
 
 export function QuestionForm({ sendData, question }) {
+  const theme = useTheme();
+
   const [correctAnswer, setCorrectAnswer] = useState();
 
   const {
@@ -74,7 +77,7 @@ export function QuestionForm({ sendData, question }) {
         />
         <S.AnswersContainer>
           <S.AnswersHeader>
-            <S.Label>Alternativas</S.Label>
+            <Label>Alternativas</Label>
             <S.AddAnswerButton
               onPress={() => {
                 append({});
@@ -110,12 +113,12 @@ export function QuestionForm({ sendData, question }) {
             setCorrectAnswer(newValue);
           }}
           value={question ? Number(getValues('correct_answer')) : correctAnswer}>
-          <S.Label>Alternativa correta</S.Label>
+          <Label>Alternativa correta</Label>
           <S.CorrectAnswerContainer>
             {fields.map((field, index) => {
               return (
                 <S.RadioButtonContainer key={`${field.id}-radio_button`}>
-                  <Text>#{index + 1}</Text>
+                  <S.RadioButtonLabel>#{index + 1}</S.RadioButtonLabel>
                   <RadioButton value={index} />
                 </S.RadioButtonContainer>
               );
@@ -128,7 +131,7 @@ export function QuestionForm({ sendData, question }) {
         <Button
           onPress={handleSubmit(onSubmit)}
           title={question ? 'Salvar Questão' : 'Criar Questão'}
-          color="#1969d3"
+          color={theme.colors.primary}
         />
       </S.ButtonContainer>
     </>

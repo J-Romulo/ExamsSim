@@ -9,4 +9,5 @@ export const MenuItem = styled.View`
 
 export const MenuText = styled.Text`
   font-size: 17px;
+  color: ${({ theme }) => theme.colors.text_on_background};
 `;

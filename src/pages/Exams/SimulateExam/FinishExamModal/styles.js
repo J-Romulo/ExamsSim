@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   width: 80%;
   height: 50%;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.card_background};
   position: relative;
 
   display: flex;
@@ -24,24 +24,12 @@ export const Container = styled.View`
   border-radius: 5px;
   border-style: solid;
   border-width: 1px;
-  border-color: ${(props) => props.theme.colors.secondary};
+  border-color: ${(props) => props.theme.colors.background};
 `;
 
 export const TitleText = styled.Text`
   font-size: 20px;
-`;
-
-export const CloseButton = styled.TouchableOpacity`
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  background-color: red;
-  border-radius: 5px;
-  right: 5;
-  top: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: ${(props) => props.theme.colors.text_on_background};
 `;
 
 export const AnswersTable = styled.View`
@@ -51,7 +39,7 @@ export const AnswersTable = styled.View`
   flex-direction: column;
   width: 100%;
   padding: 0 5px;
-  background-color: ${(props) => props.theme.colors.secondary};
+  background-color: ${(props) => props.theme.colors.background};
   border-radius: 5px;
 
   height: 100%;
@@ -90,6 +78,7 @@ export const TableColumn = styled.View``;
 export const TableHeaderTitle = styled.Text`
   font-size: 15px;
   font-weight: bold;
+  color: ${(props) => props.theme.colors.text_on_background};
 `;
 
 export const TableData = styled.Text`

@@ -1,11 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { ModalCloseButton } from '../../../../global/styles/globalComponents';
 
 export function FinishExamModal({ questions, isModalVisible, setModalVisible }) {
+  const theme = useTheme();
+
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   const toggleModal = () => {
@@ -28,9 +32,9 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
     return (
       <Modal visible={isModalVisible} hasBackdrop backdropColor="black" backdropOpacity={0.4}>
         <S.Container>
-          <S.CloseButton onPress={toggleModal}>
+          <ModalCloseButton onPress={toggleModal}>
             <AntDesign name="close" size={24} color="white" />
-          </S.CloseButton>
+          </ModalCloseButton>
           <LoadingModal isVisible />
         </S.Container>
       </Modal>
@@ -39,9 +43,9 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
   return (
     <Modal visible={isModalVisible} hasBackdrop backdropColor="black" backdropOpacity={0.4}>
       <S.Container>
-        <S.CloseButton onPress={toggleModal}>
+        <ModalCloseButton onPress={toggleModal}>
           <AntDesign name="close" size={24} color="white" />
-        </S.CloseButton>
+        </ModalCloseButton>
 
         <S.TitleText>Simulado finalizado!</S.TitleText>
         <S.TitleText>Resultado:</S.TitleText>
@@ -66,7 +70,8 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
           </S.TableHeader>
 
           {questions.map((question, index) => {
-            const backgroundColor = index % 2 === 0 ? '#FFF' : '#b7d5f0';
+            const backgroundColor =
+              index % 2 === 0 ? theme.colors.background_surface : theme.colors.terciary;
             return (
               <S.TableRow style={{ backgroundColor }}>
                 <S.TableColumn style={{ flex: 0.5 }}>
@@ -75,7 +80,9 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
 
                 <S.TableColumn>
                   <S.TableData>
-                    {String(question.selectedAnswer) ? Number(question.selectedAnswer) + 1 : null}
+                    {question.selectedAnswer || question.selectedAnswer === 0
+                      ? Number(question.selectedAnswer) + 1
+                      : null}
                   </S.TableData>
                 </S.TableColumn>
 

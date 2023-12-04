@@ -3,6 +3,7 @@ export const lightTheme = {
     //dark: #293240
     primary: '#095FD9',
     secondary: '#E0EDFF',
+    terciary: '#b7d5f0',
 
     background: '#E0EDFF',
     nav_background: '#095FD9',
@@ -31,6 +32,7 @@ export const darkTheme = {
   colors: {
     primary: '#2b364e',
     secondary: '#021A3B',
+    terciary: '#748798',
 
     background: '#293240',
     nav_background: '#2b364e',
@@ -49,7 +51,7 @@ export const darkTheme = {
     text_on_background: '#9b9fac',
 
     green: '#034720',
-    red: '#501916',
+    red: '#A73430',
     gray: '#3C3C3C',
     lightGray: '#515151',
   },

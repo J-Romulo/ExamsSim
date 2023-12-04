@@ -16,7 +16,7 @@ export const ItemContainer = styled.TouchableOpacity`
 
 export const ItemTitle = styled.Text`
   font-size: 20px;
-  color: black;
+  color: ${({ theme }) => theme.colors.text_on_background};
 `;
 
 export const CreateButton = styled.TouchableOpacity`

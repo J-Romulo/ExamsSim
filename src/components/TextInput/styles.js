@@ -4,16 +4,12 @@ export const InputContainer = styled.View`
   width: 100%;
   display: flex;
   align-items: flex-start;
-  margin-bottom: 10px;
-`;
-
-export const Label = styled.Text`
-  font-size: 18px;
+  margin-bottom: 18px;
 `;
 
 export const ErrorMessage = styled.Text`
   font-size: 13px;
-  color: red;
+  color: ${({ theme }) => theme.colors.red};
 `;
 export const TextField = styled.TextInput`
   width: 100%;
@@ -21,6 +17,6 @@ export const TextField = styled.TextInput`
   border-width: 1px;
   border-radius: 10px;
   font-size: 15px;
-  border-color: ${({ error }) => (error ? 'red' : 'black')};
-  background-color: white;
+  border-color: ${({ error, theme }) => (error ? theme.colors.red : 'black')};
+  background-color: ${({ theme }) => theme.colors.background_surface};
 `;

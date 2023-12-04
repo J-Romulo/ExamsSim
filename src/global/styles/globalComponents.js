@@ -49,3 +49,23 @@ export const DeleteButton = styled.TouchableOpacity`
   position: absolute;
   right: 1px;
 `;
+
+export const Label = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.secondary_text};
+  margin-bottom: 5px;
+`;
+
+export const ModalCloseButton = styled.TouchableOpacity`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  background-color: ${(props) => props.theme.colors.red};
+  border-radius: 5px;
+  right: 5;
+  top: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

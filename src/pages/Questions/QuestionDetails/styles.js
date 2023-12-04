@@ -1,10 +1,5 @@
 import styled from 'styled-components/native';
 
-export const FieldLabel = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-`;
-
 export const FieldValue = styled.Text`
   font-size: 16px;
 `;
@@ -52,5 +47,5 @@ export const ItemContainer = styled.View`
 
 export const ItemTitle = styled.Text`
   font-size: 20px;
-  color: black;
+  color: ${(props) => props.theme.colors.text_on_background};
 `;

@@ -1,10 +1,15 @@
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import Modal from 'react-native-modal';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
+import { ModalCloseButton } from '../../global/styles/globalComponents';
+
 
 export function DialogModal({ state, closeModal, submit }) {
+  const theme = useTheme();
+
   return (
     <Modal
       visible={state.isOpen}
@@ -14,11 +19,11 @@ export function DialogModal({ state, closeModal, submit }) {
       onRequestClose={closeModal}>
       <S.Container>
         {state.enableClose && (
-          <S.CloseButton onPress={closeModal}>
+          <ModalCloseButton onPress={closeModal}>
             <AntDesign name="close" size={24} color="white" />
-          </S.CloseButton>
+          </ModalCloseButton>
         )}
-        <FontAwesome name="exclamation-circle" size={70} color="#595959" />
+        <FontAwesome name="exclamation-circle" size={70} color={theme.colors.secondary_text} />
         <S.Message>{state.message}</S.Message>
 
         <S.OptionsContainer>
