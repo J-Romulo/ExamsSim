@@ -25,7 +25,7 @@ export function SearchBar(props) {
         />
 
         <S.CreateButton onPress={closeBar}>
-          <FontAwesome name="close" size={24} color={`${theme.colors.background_surface}`} />
+          <FontAwesome name="close" size={24} color="white" />
         </S.CreateButton>
       </S.Container>
     );
@@ -33,7 +33,7 @@ export function SearchBar(props) {
 
   return (
     <S.CreateButton onPress={() => setBarOpened(true)}>
-      <FontAwesome name="search" size={24} color={`${theme.colors.background_surface}`} />
+      <FontAwesome name="search" size={24} color="white" />
     </S.CreateButton>
   );
 }

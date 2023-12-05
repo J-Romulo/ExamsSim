@@ -103,7 +103,7 @@ export const SeeReultsButton = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: ${(props) => props.theme.colors.background_surface};
+  color: white;
 `;
 
 export const ButtonsContainer = styled.View`

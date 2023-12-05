@@ -58,7 +58,7 @@ function SubjectsScreens() {
         headerStyle: {
           backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: theme.colors.background_surface,
+        headerTintColor: 'white',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -113,11 +113,7 @@ function SubjectsScreens() {
                   visible={menuOpened}
                   anchor={
                     <TouchableOpacity onPress={() => setMenuOpened(true)}>
-                      <Entypo
-                        name="dots-three-vertical"
-                        size={22}
-                        color={theme.colors.background_surface}
-                      />
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
                     </TouchableOpacity>
                   }
                   onRequestClose={() => setMenuOpened(false)}>
@@ -177,7 +173,7 @@ function QuestionsScreens() {
         headerStyle: {
           backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: theme.colors.background_surface,
+        headerTintColor: 'white',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -213,11 +209,7 @@ function QuestionsScreens() {
                   visible={menuOpened}
                   anchor={
                     <TouchableOpacity onPress={() => setMenuOpened(true)}>
-                      <Entypo
-                        name="dots-three-vertical"
-                        size={22}
-                        color={theme.colors.background_surface}
-                      />
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
                     </TouchableOpacity>
                   }
                   onRequestClose={() => setMenuOpened(false)}>
@@ -259,7 +251,7 @@ function ExamsScreens() {
         headerStyle: {
           backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: theme.colors.background_surface,
+        headerTintColor: 'white',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -302,7 +294,7 @@ function SettingsScreens() {
         headerStyle: {
           backgroundColor: theme.colors.nav_background,
         },
-        headerTintColor: theme.colors.background_surface,
+        headerTintColor: 'white',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -319,7 +311,7 @@ export default function AppRoutes() {
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: theme.colors.nav_background,
-        tabBarInactiveTintColor: theme.colors.background_surface,
+        tabBarInactiveTintColor: 'whitesmoke',
         tabBarActiveBackgroundColor: theme.colors.background_surface,
         tabBarInactiveBackgroundColor: theme.colors.nav_background,
         tabBarStyle: {
