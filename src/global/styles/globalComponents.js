@@ -33,6 +33,14 @@ export const ItemContainer = styled.TouchableOpacity`
   elevation: 3;
 `;
 
+export const SelectedItemOverlay = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background-color: 'rgba(255,0,0,0.5)';
+`;
+
 export const DeleteButton = styled.TouchableOpacity`
   width: 20px;
   height: 20px;
