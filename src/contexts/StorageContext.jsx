@@ -116,6 +116,18 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function deleteSubjects(subjects_ids) {
+    try {
+      const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
+
+      const new_subjects = subjects.filter((subj) => !subjects_ids.includes(subj.id));
+
+      await AsyncStorage.setItem('@subjects', JSON.stringify(new_subjects));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function dissociateQuestionFromSubject(subject_id, question_id) {
     const question = await fetchQuestion(question_id);
 
@@ -251,6 +263,7 @@ export function StorageProvider({ children }) {
         addSubject,
         saveSubject,
         deleteSubject,
+        deleteSubjects,
         fetchQuestions,
         addQuestion,
         fetchQuestion,
