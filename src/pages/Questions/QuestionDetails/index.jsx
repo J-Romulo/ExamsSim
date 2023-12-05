@@ -49,6 +49,9 @@ export function QuestionDetails({ route }) {
         data={question?.answers}
         renderItem={RenderQuestion}
         keyExtractor={(item) => item}
+        initialNumToRender={20}
+        maxToRenderPerBatch={10}
+        getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
     </Container>
   );

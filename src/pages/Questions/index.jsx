@@ -133,6 +133,9 @@ export function Questions(props) {
         ListEmptyComponent={EmptyContent({ emptyText: 'Nenhuma questão encontrada' })}
         onRefresh={onRefresh}
         refreshing={refreshing}
+        initialNumToRender={20}
+        maxToRenderPerBatch={10}
+        getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
       {selectingQuestions ? (
         <S.CreateButton onPress={handleDeleteSelectedItems}>

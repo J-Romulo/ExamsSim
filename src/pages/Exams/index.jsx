@@ -132,6 +132,9 @@ export function Exams(props) {
         ListEmptyComponent={EmptyContent({ emptyText: 'Nenhum simulado encontrado' })}
         onRefresh={onRefresh}
         refreshing={refreshing}
+        initialNumToRender={20}
+        maxToRenderPerBatch={10}
+        getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
       {selectingExams ? (
         <S.CreateButton onPress={handleDeleteSelectedItems}>

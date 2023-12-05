@@ -134,6 +134,9 @@ export function Subjects(props) {
         ListEmptyComponent={EmptyContent({ emptyText: 'Nenhuma matéria encontrada' })}
         onRefresh={onRefresh}
         refreshing={refreshing}
+        initialNumToRender={20}
+        maxToRenderPerBatch={10}
+        getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
 
       {selectingSubjects ? (
