@@ -178,6 +178,18 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function deleteQuestions(questions_ids) {
+    try {
+      const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+      const new_questions = questions.filter((quest) => !questions_ids.includes(quest.id));
+
+      await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function fetchQuestion(question_id) {
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
@@ -248,6 +260,7 @@ export function StorageProvider({ children }) {
         dissociateQuestionFromSubject,
         saveQuestion,
         deleteQuestion,
+        deleteQuestions,
       }}>
       {children}
     </StorageContext.Provider>
