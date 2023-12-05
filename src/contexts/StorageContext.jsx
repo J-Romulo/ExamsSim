@@ -254,6 +254,30 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function deleteExam(exam_id) {
+    try {
+      const exams = JSON.parse(await AsyncStorage.getItem('@exams'));
+
+      const new_exams = exams.filter((quest) => quest.id !== exam_id);
+
+      await AsyncStorage.setItem('@exams', JSON.stringify(new_exams));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteExams(exams_ids) {
+    try {
+      const exams = JSON.parse(await AsyncStorage.getItem('@exams'));
+
+      const new_exams = exams.filter((quest) => !exams_ids.includes(quest.id));
+
+      await AsyncStorage.setItem('@exams', JSON.stringify(new_exams));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <StorageContext.Provider
       value={{
@@ -270,6 +294,8 @@ export function StorageProvider({ children }) {
         addExam,
         fetchExam,
         fetchExams,
+        deleteExam,
+        deleteExams,
         dissociateQuestionFromSubject,
         saveQuestion,
         deleteQuestion,
