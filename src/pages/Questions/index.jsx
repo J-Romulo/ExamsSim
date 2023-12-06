@@ -18,8 +18,10 @@ import { useStorage } from '../../hooks/useStorage';
 export function Questions(props) {
   const theme = useTheme();
 
+  const { route } = props;
+
   const [loading, setLoading] = useState(false);
-  const { fetchQuestions, deleteQuestions } = useStorage();
+  const { fetchQuestions, deleteQuestions, associateQuestionsToSubject } = useStorage();
   const [refreshing, setRefreshing] = useState(false);
 
   const [state, dispatch] = useReducer(QuestionsReducer, {
@@ -31,12 +33,12 @@ export function Questions(props) {
 
   const { questions, filteredQuestions, selectedQuestions, selectingQuestions } = state;
 
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
   const isFocused = useIsFocused();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (selectingQuestions) {
+      if (selectingQuestions && !route?.params.add_subject) {
         dispatch({ type: QuestionsReducerActions.RESET_SELECTION });
         return true;
       }
@@ -70,6 +72,12 @@ export function Questions(props) {
     }
   }, [props.searchText, questions]);
 
+  useEffect(() => {
+    if (route && route.params.add_subject) {
+      dispatch({ type: QuestionsReducerActions.TOGGLE_SELECTING });
+    }
+  }, [route]);
+
   function onRefresh() {
     setRefreshing(true);
     fetchQuestionsItems();
@@ -82,7 +90,7 @@ export function Questions(props) {
     if (selectedQuestions.includes(item.id)) {
       const newQuestionsSelected = selectedQuestions.filter((listItem) => listItem !== item.id);
 
-      if (newQuestionsSelected.length === 0)
+      if (newQuestionsSelected.length === 0 && !route?.params.add_subject)
         dispatch({ type: QuestionsReducerActions.TOGGLE_SELECTING });
 
       return dispatch({
@@ -103,12 +111,52 @@ export function Questions(props) {
     onRefresh();
   }
 
+  async function handleAddToSubjectSelectedItems() {
+    await associateQuestionsToSubject(selectedQuestions, route?.params.add_subject);
+    dispatch({ type: QuestionsReducerActions.RESET_SELECTION });
+    goBack();
+  }
+
   function getSelected(item) {
     return selectedQuestions.includes(item.id);
   }
 
+  function renderSelectingButton() {
+    if (selectingQuestions) {
+      if (props.route?.params?.add_subject) {
+        return (
+          <S.SelectButton onPress={handleAddToSubjectSelectedItems}>
+            <S.SelectText>Adicionar à matéria</S.SelectText>
+          </S.SelectButton>
+        );
+      }
+
+      return (
+        <S.CreateButton onPress={handleDeleteSelectedItems}>
+          <Ionicons name="trash-bin" size={24} color={theme.colors.text_on_background} />
+        </S.CreateButton>
+      );
+    }
+
+    return (
+      <S.CreateButton
+        onPress={() => {
+          navigate('create_question');
+        }}>
+        <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
+      </S.CreateButton>
+    );
+  }
+
   function RenderQuestions(item) {
     const isQuestionSelected = getSelected(item.item);
+
+    const isSelectingToSubject = selectingQuestions && route?.params.add_subject;
+    let alreadyAssociateWithSubject = false;
+
+    if (isSelectingToSubject) {
+      alreadyAssociateWithSubject = item.item.subjects.includes(route?.params.add_subject);
+    }
 
     return (
       <ItemContainer
@@ -116,7 +164,8 @@ export function Questions(props) {
           if (selectingQuestions) handleLongPress(item.item);
           else navigate('question_details', { id: item.item.id });
         }}
-        onLongPress={() => handleLongPress(item.item)}>
+        onLongPress={() => handleLongPress(item.item)}
+        disabled={alreadyAssociateWithSubject}>
         <S.ItemTitle>{item.item.question}</S.ItemTitle>
         {isQuestionSelected && <SelectedItemOverlay />}
       </ItemContainer>
@@ -137,18 +186,8 @@ export function Questions(props) {
         maxToRenderPerBatch={10}
         getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
-      {selectingQuestions ? (
-        <S.CreateButton onPress={handleDeleteSelectedItems}>
-          <Ionicons name="trash-bin" size={24} color={theme.colors.text_on_background} />
-        </S.CreateButton>
-      ) : (
-        <S.CreateButton
-          onPress={() => {
-            navigate('create_question');
-          }}>
-          <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
-        </S.CreateButton>
-      )}
+
+      {renderSelectingButton()}
     </Container>
   );
 }

@@ -2,6 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import { useTheme } from 'styled-components';
 
 import * as S from './styles';
 import { EmptyContent } from '../../../components/EmptyContent';
@@ -16,6 +18,8 @@ export function SubjectDetails({ route }) {
   const { fetchSubject, dissociateQuestionFromSubject } = useStorage();
   const [subject, setSubject] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [menuOpened, setMenuOpened] = useState(false);
+  const theme = useTheme();
 
   const isFocused = useIsFocused();
   const { navigate } = useNavigation();
@@ -75,12 +79,25 @@ export function SubjectDetails({ route }) {
 
       <S.QuestionsHeader>
         <S.SubjectTitle>Questões associadas</S.SubjectTitle>
-        <S.CreateQuestionButton
-          onPress={() => {
-            navigate('create_question_subject', { id_subject: subject?.id });
-          }}>
-          <AntDesign name="plus" size={12} color="black" />
-        </S.CreateQuestionButton>
+        <Menu
+          style={{ backgroundColor: theme.colors.background_surface }}
+          visible={menuOpened}
+          anchor={
+            <S.CreateQuestionButton onPress={() => setMenuOpened(true)}>
+              <AntDesign name="plus" size={12} color="black" />
+            </S.CreateQuestionButton>
+          }
+          onRequestClose={() => setMenuOpened(false)}>
+          <MenuItem
+            onPress={() => {
+              navigate('create_question_subject', { id_subject: subject?.id });
+            }}>
+            Criar questão
+          </MenuItem>
+          <MenuItem onPress={() => navigate('questions', { add_subject: subject?.id })}>
+            Adicionar questão já existente
+          </MenuItem>
+        </Menu>
       </S.QuestionsHeader>
       <FlatList
         data={subject?.questions}

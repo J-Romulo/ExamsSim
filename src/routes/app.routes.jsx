@@ -141,6 +141,17 @@ function SubjectsScreens() {
         name="question_details_subject"
         component={QuestionDetails}
       />
+
+      <SubjectsStack.Screen
+        options={() => ({
+          headerTitle: 'Questões',
+          headerRight: () => (
+            <SearchBar setText={setSearchText} placeholder="Procure pela questão..." />
+          ),
+        })}
+        name="questions">
+        {({ route }) => <Questions searchText={searchText} route={route} />}
+      </SubjectsStack.Screen>
     </SubjectsStack.Navigator>
   );
 }

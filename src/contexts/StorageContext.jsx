@@ -136,6 +136,20 @@ export function StorageProvider({ children }) {
     await saveQuestion(question);
   }
 
+  async function associateQuestionsToSubject(questions_ids, subject_id) {
+    const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+    const questions_to_associate = questions.filter((quest) => questions_ids.includes(quest.id));
+
+    const new_questions = questions_to_associate.map((question) => {
+      question.subjects.push(subject_id);
+
+      return question;
+    });
+
+    await saveQuestions(new_questions);
+  }
+
   async function fetchQuestions() {
     try {
       const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
@@ -173,6 +187,23 @@ export function StorageProvider({ children }) {
       new_questions.push(question);
 
       await AsyncStorage.setItem('@questions', JSON.stringify(new_questions));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function saveQuestions(questions_to_add) {
+    try {
+      const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+      const new_questions = questions.filter(
+        (quest) => !questions_to_add.some((quest_add) => quest_add.id === quest.id)
+      );
+
+      await AsyncStorage.setItem(
+        '@questions',
+        JSON.stringify([...new_questions, ...questions_to_add])
+      );
     } catch (err) {
       console.log(err);
     }
@@ -281,25 +312,28 @@ export function StorageProvider({ children }) {
   return (
     <StorageContext.Provider
       value={{
-        fetchSubjects,
-        fetchSubject,
-        fetchSubjectByTitle,
-        addSubject,
-        saveSubject,
-        deleteSubject,
-        deleteSubjects,
-        fetchQuestions,
-        addQuestion,
-        fetchQuestion,
         addExam,
-        fetchExam,
-        fetchExams,
         deleteExam,
         deleteExams,
-        dissociateQuestionFromSubject,
-        saveQuestion,
+        fetchExam,
+        fetchExams,
+
+        addQuestion,
+        associateQuestionsToSubject,
         deleteQuestion,
         deleteQuestions,
+        dissociateQuestionFromSubject,
+        fetchQuestion,
+        fetchQuestions,
+        saveQuestion,
+
+        addSubject,
+        deleteSubject,
+        deleteSubjects,
+        fetchSubject,
+        fetchSubjectByTitle,
+        fetchSubjects,
+        saveSubject,
       }}>
       {children}
     </StorageContext.Provider>
