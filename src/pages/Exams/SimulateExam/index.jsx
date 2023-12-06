@@ -68,7 +68,10 @@ export function SimulateExam({ route }) {
 
     if (
       examType === 'question_time' &&
-      (currentQuestion?.hour || currentQuestion?.minute || currentQuestion?.second)
+      (currentQuestion?.hour ||
+        currentQuestion?.minute ||
+        currentQuestion?.second ||
+        currentQuestion?.no_time)
     ) {
       setCurrentTime({
         hour: Number(currentQuestion.hour),
@@ -94,10 +97,10 @@ export function SimulateExam({ route }) {
   });
 
   useEffect(() => {
-    if (!hours && !minutes && !seconds) {
+    if (!hours && !minutes && !seconds && !finishedExam) {
       if (exam?.examType === 'overall_time') {
         finishExam();
-      } else if (exam?.examType === 'question_time') {
+      } else if (exam?.examType === 'question_time' && !currentQuestion?.no_time) {
         saveCurrentQuestionWithNoTime();
         Alert.alert('Sem tempo!', 'O tempo para responder essa questão acabou.');
       }
@@ -138,9 +141,9 @@ export function SimulateExam({ route }) {
     const newQuestionsArray = [...questions];
     newQuestionsArray[currentQuestionindex] = {
       ...newQuestionsArray[currentQuestionindex],
-      hour: hours,
-      minute: minutes,
-      second: seconds,
+      hour: hours ?? 0,
+      minute: minutes ?? 0,
+      second: seconds ?? 0,
     };
     setQuestions(newQuestionsArray);
   }
@@ -182,6 +185,7 @@ export function SimulateExam({ route }) {
   function finishExam() {
     setFinishedExam(true);
     setResultModalVisible(true);
+    saveCurrentQuestionWithCurrentTime();
   }
 
   function exitExam() {
@@ -210,7 +214,7 @@ export function SimulateExam({ route }) {
 
         <S.QuestionsCount>{`${currentQuestionindex + 1}/${questions.length}`}</S.QuestionsCount>
 
-        {!!(hours > 0 || minutes > 0 || seconds > 0) && (
+        {!!(hours > 0 || minutes > 0 || seconds > 0) && !finishedExam && (
           <CountdownTimer hours={hours} minutes={minutes} seconds={seconds} />
         )}
 
