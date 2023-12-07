@@ -159,7 +159,7 @@ function SubjectsScreens() {
 function QuestionsScreens() {
   const theme = useTheme();
   const { openTwoOptionsModal } = useDialogModal();
-  const { deleteQuestion } = useStorage();
+  const { deleteQuestion, deleteSubject } = useStorage();
   const { navigate } = useNavigation();
 
   const [searchText, setSearchText] = useState('');
@@ -174,6 +174,19 @@ function QuestionsScreens() {
       async () => {
         await deleteQuestion(question_id);
         navigate('questions');
+      }
+    );
+  }
+
+  function deleteSubjectById(subject_id) {
+    setMenuOpened(false);
+    openTwoOptionsModal(
+      'Tem certeza que deseja excluir permanentemente a matéria?',
+      'Sim',
+      'Cancelar',
+      async () => {
+        await deleteSubject(subject_id);
+        navigate('subjects');
       }
     );
   }
@@ -247,6 +260,38 @@ function QuestionsScreens() {
         })}
         name="edit_question"
         component={EditQuestion}
+      />
+
+      <QuestionsStack.Screen
+        options={({ route, navigation }) => ({
+          headerShown: true,
+          headerTitle: 'Detalhamento de matéria',
+          headerRight: () => {
+            return (
+              <View>
+                <Menu
+                  style={{ backgroundColor: theme.colors.background_surface }}
+                  visible={menuOpened}
+                  anchor={
+                    <TouchableOpacity onPress={() => setMenuOpened(true)}>
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                    </TouchableOpacity>
+                  }
+                  onRequestClose={() => setMenuOpened(false)}>
+                  <MenuItem
+                    onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
+                    Editar
+                  </MenuItem>
+                  <MenuItem onPress={() => deleteSubjectById(route.params.id)}>
+                    Excluir matéria
+                  </MenuItem>
+                </Menu>
+              </View>
+            );
+          },
+        })}
+        name="subject_details"
+        component={SubjectDetails}
       />
     </QuestionsStack.Navigator>
   );
