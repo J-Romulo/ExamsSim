@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { FlatList, Alert } from 'react-native';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 
 import { FinishExamModal } from './FinishExamModal';
@@ -199,64 +200,81 @@ export function SimulateExam({ route }) {
       </Container>
     );
   }
+
+  const handleSwipe = ({ nativeEvent }) => {
+    const { state } = nativeEvent;
+    if (state === 5) {
+      //handle swipe right
+      if (nativeEvent.translationX < -150) {
+        nextQuestion();
+      }
+      //handle swipe left
+      else if (nativeEvent.translationX > 150) {
+        lastQuestion();
+      }
+    }
+  };
+
   return (
-    <Container>
-      <FinishExamModal
-        questions={questions}
-        isModalVisible={isResultModalVisible}
-        setModalVisible={setResultModalVisible}
-      />
+    <PanGestureHandler onHandlerStateChange={handleSwipe}>
+      <Container>
+        <FinishExamModal
+          questions={questions}
+          isModalVisible={isResultModalVisible}
+          setModalVisible={setResultModalVisible}
+        />
 
-      <S.ExamHeader>
-        <S.ArrowButton onPress={lastQuestion}>
-          <AntDesign name="arrowleft" size={32} color={theme.colors.text_on_background} />
-        </S.ArrowButton>
+        <S.ExamHeader>
+          <S.ArrowButton onPress={lastQuestion}>
+            <AntDesign name="arrowleft" size={32} color={theme.colors.text_on_background} />
+          </S.ArrowButton>
 
-        <S.QuestionsCount>{`${currentQuestionindex + 1}/${questions.length}`}</S.QuestionsCount>
+          <S.QuestionsCount>{`${currentQuestionindex + 1}/${questions.length}`}</S.QuestionsCount>
 
-        {!!(hours > 0 || minutes > 0 || seconds > 0) && !finishedExam && (
-          <CountdownTimer hours={hours} minutes={minutes} seconds={seconds} />
+          {!!(hours > 0 || minutes > 0 || seconds > 0) && !finishedExam && (
+            <CountdownTimer hours={hours} minutes={minutes} seconds={seconds} />
+          )}
+
+          <S.ArrowButton onPress={nextQuestion}>
+            <AntDesign name="arrowright" size={32} color={theme.colors.text_on_background} />
+          </S.ArrowButton>
+        </S.ExamHeader>
+
+        <LoadingModal isVisible={loading} />
+        <Label>Questão</Label>
+        <S.FieldValue>{currentQuestion.question}</S.FieldValue>
+
+        <S.QuestionsHeader>
+          <Label>Alternativas</Label>
+        </S.QuestionsHeader>
+
+        <FlatList
+          data={currentQuestion?.answers}
+          renderItem={RenderQuestion}
+          keyExtractor={(item) => item}
+          initialNumToRender={20}
+          maxToRenderPerBatch={10}
+          getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
+        />
+
+        {finishedExam ? (
+          <S.ButtonsContainer>
+            <S.FinishButton
+              onPress={() => setResultModalVisible(true)}
+              style={{ backgroundColor: theme.colors.primary }}>
+              <S.ButtonText>Ver resultados</S.ButtonText>
+            </S.FinishButton>
+
+            <S.FinishButton onPress={exitExam}>
+              <S.ButtonText>Sair</S.ButtonText>
+            </S.FinishButton>
+          </S.ButtonsContainer>
+        ) : (
+          <S.FinishButton onPress={finishExam}>
+            <S.ButtonText>Finalizar teste</S.ButtonText>
+          </S.FinishButton>
         )}
-
-        <S.ArrowButton onPress={nextQuestion}>
-          <AntDesign name="arrowright" size={32} color={theme.colors.text_on_background} />
-        </S.ArrowButton>
-      </S.ExamHeader>
-
-      <LoadingModal isVisible={loading} />
-      <Label>Questão</Label>
-      <S.FieldValue>{currentQuestion.question}</S.FieldValue>
-
-      <S.QuestionsHeader>
-        <Label>Alternativas</Label>
-      </S.QuestionsHeader>
-
-      <FlatList
-        data={currentQuestion?.answers}
-        renderItem={RenderQuestion}
-        keyExtractor={(item) => item}
-        initialNumToRender={20}
-        maxToRenderPerBatch={10}
-        getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
-      />
-
-      {finishedExam ? (
-        <S.ButtonsContainer>
-          <S.FinishButton
-            onPress={() => setResultModalVisible(true)}
-            style={{ backgroundColor: theme.colors.primary }}>
-            <S.ButtonText>Ver resultados</S.ButtonText>
-          </S.FinishButton>
-
-          <S.FinishButton onPress={exitExam}>
-            <S.ButtonText>Sair</S.ButtonText>
-          </S.FinishButton>
-        </S.ButtonsContainer>
-      ) : (
-        <S.FinishButton onPress={finishExam}>
-          <S.ButtonText>Finalizar teste</S.ButtonText>
-        </S.FinishButton>
-      )}
-    </Container>
+      </Container>
+    </PanGestureHandler>
   );
 }

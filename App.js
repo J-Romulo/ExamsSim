@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider, DefaultTheme } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 
@@ -57,7 +58,9 @@ export default function App() {
           <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
             <PaperProvider theme={themed_paper}>
               <DialogModalProvider>
-                <AppRoutes />
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                  <AppRoutes />
+                </GestureHandlerRootView>
               </DialogModalProvider>
             </PaperProvider>
           </ThemeProvider>
