@@ -171,7 +171,7 @@ export function CreateExam() {
         </S.DropdownFieldContainer>
 
         <S.DropdownFieldContainer>
-          <Label>Questões</Label>
+          <Label>Matérias</Label>
           <DropdownSelect
             value={valueSubject}
             setValue={setValueSubject}

@@ -12,6 +12,7 @@ import { useDialogModal } from '../hooks/useDialogModal';
 import { useStorage } from '../hooks/useStorage';
 import { Exams } from '../pages/Exams';
 import { CreateExam } from '../pages/Exams/CreateExam';
+import { ExamDetails } from '../pages/Exams/ExamDetails';
 import { SimulateExam } from '../pages/Exams/SimulateExam';
 import { Questions } from '../pages/Questions';
 import { CreateQuestion } from '../pages/Questions/CreateQuestion';
@@ -300,6 +301,24 @@ function QuestionsScreens() {
 function ExamsScreens() {
   const theme = useTheme();
   const [searchText, setSearchText] = useState('');
+  const [menuOpened, setMenuOpened] = useState(false);
+
+  const { openTwoOptionsModal } = useDialogModal();
+  const { deleteExam } = useStorage();
+  const { navigate } = useNavigation();
+
+  function deleteExamById(exam_id) {
+    setMenuOpened(false);
+    openTwoOptionsModal(
+      'Tem certeza que deseja excluir permanentemente o simulado?',
+      'Sim',
+      'Cancelar',
+      async () => {
+        await deleteExam(exam_id);
+        navigate('exams');
+      }
+    );
+  }
 
   return (
     <ExamsStack.Navigator
@@ -337,6 +356,37 @@ function ExamsScreens() {
         })}
         name="simulate_exam"
         component={SimulateExam}
+      />
+      <ExamsStack.Screen
+        options={({ route, navigation }) => ({
+          headerShown: true,
+          headerTitle: 'Detalhamento do simulado',
+          headerRight: () => {
+            return (
+              <View>
+                <Menu
+                  style={{ backgroundColor: theme.colors.background_surface }}
+                  visible={menuOpened}
+                  anchor={
+                    <TouchableOpacity onPress={() => setMenuOpened(true)}>
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                    </TouchableOpacity>
+                  }
+                  onRequestClose={() => setMenuOpened(false)}>
+                  <MenuItem
+                    onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
+                    Editar
+                  </MenuItem>
+                  <MenuItem onPress={() => deleteExamById(route.params.id)}>
+                    Excluir simulado
+                  </MenuItem>
+                </Menu>
+              </View>
+            );
+          },
+        })}
+        name="exam_details"
+        component={ExamDetails}
       />
     </ExamsStack.Navigator>
   );
