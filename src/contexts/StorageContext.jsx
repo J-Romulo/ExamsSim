@@ -245,6 +245,35 @@ export function StorageProvider({ children }) {
     }
   }
 
+  async function fetchQuestionWithSubjects(question_id) {
+    try {
+      const questions = JSON.parse(await AsyncStorage.getItem('@questions'));
+
+      const question = questions.find((question) => question.id === question_id);
+
+      const subjects = JSON.parse(await AsyncStorage.getItem('@subjects'));
+
+      const subjects_associated = [];
+
+      question.subjects?.forEach((subject) => {
+        const find_subject = subjects.find((elem) => elem.id === subject);
+
+        if (find_subject) {
+          subjects_associated.push(find_subject);
+        }
+      });
+
+      const question_formatted = {
+        ...question,
+        subjects: subjects_associated,
+      };
+
+      return question_formatted;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function addExam(exam) {
     try {
       let exams = JSON.parse(await AsyncStorage.getItem('@exams'));
@@ -325,6 +354,7 @@ export function StorageProvider({ children }) {
         dissociateQuestionFromSubject,
         fetchQuestion,
         fetchQuestions,
+        fetchQuestionWithSubjects,
         saveQuestion,
 
         addSubject,
