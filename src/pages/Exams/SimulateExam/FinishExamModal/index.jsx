@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components';
 import * as S from './styles';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { ModalCloseButton } from '../../../../global/styles/globalComponents';
+import { getExamResults } from '../utils/getExamResults';
 
 export function FinishExamModal({ questions, isModalVisible, setModalVisible }) {
   const theme = useTheme();
@@ -17,15 +18,9 @@ export function FinishExamModal({ questions, isModalVisible, setModalVisible }) 
   };
 
   useEffect(() => {
-    let correctAnswersToParse = 0;
-    questions &&
-      questions.length > 0 &&
-      questions.forEach((question) => {
-        if (String(question.selectedAnswer) && question.selectedAnswer == question.correct_answer)
-          correctAnswersToParse++;
-      });
+    const { correctAnswers } = getExamResults(questions);
 
-    setCorrectAnswers(correctAnswersToParse);
+    setCorrectAnswers(correctAnswers);
   }, [questions]);
 
   if (!questions) {

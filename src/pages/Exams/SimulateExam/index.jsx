@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { FinishExamModal } from './FinishExamModal';
 import * as S from './styles';
+import { getExamResults } from './utils/getExamResults';
 import { CountdownTimer } from '../../../components/CountdownTimer';
 import { LoadingModal } from '../../../components/LoadingModal';
 import { Container, Label } from '../../../global/styles/globalComponents';
@@ -18,7 +19,7 @@ export function SimulateExam({ route }) {
 
   const [loading, setLoading] = useState(false);
   const { id } = route.params;
-  const { fetchExam, fetchSubjectByTitle } = useStorage();
+  const { fetchExam, fetchSubjectByTitle, saveExamResult } = useStorage();
   const [exam, setExam] = useState();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState();
@@ -187,6 +188,9 @@ export function SimulateExam({ route }) {
     setFinishedExam(true);
     setResultModalVisible(true);
     saveCurrentQuestionWithCurrentTime();
+
+    const examResults = getExamResults(questions);
+    saveExamResult(exam, examResults);
   }
 
   function exitExam() {
