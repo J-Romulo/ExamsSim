@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { ColorThemeProvider } from './src/contexts/ColorThemeContext';
 import { DialogModalProvider } from './src/contexts/DialogModalContext';
-import { StorageProvider } from './src/contexts/StorageContext';
+import { StorageProvider } from './src/contexts/StorageContext/StorageContext';
 import { lightTheme, darkTheme } from './src/global/styles/theme';
 import AppRoutes from './src/routes/app.routes';
 
