@@ -47,7 +47,7 @@ export function QuestionDetails({ route }) {
       'Cancelar',
       async () => {
         await dissociateQuestionFromSubject(subject_id, id);
-        fetchQuestionItem('subjects');
+        fetchQuestionItem();
       }
     );
   }
