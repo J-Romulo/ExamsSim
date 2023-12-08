@@ -10,6 +10,7 @@ import { EmptyContent } from '../../components/EmptyContent';
 import { LoadingModal } from '../../components/LoadingModal';
 import {
   Container,
+  FloatingActionButton,
   ItemContainer,
   SelectedItemOverlay,
 } from '../../global/styles/globalComponents';
@@ -121,7 +122,7 @@ export function Questions(props) {
     return selectedQuestions.includes(item.id);
   }
 
-  function renderSelectingButton() {
+  function renderActionButton() {
     if (selectingQuestions) {
       if (props.route?.params?.add_subject) {
         return (
@@ -132,19 +133,19 @@ export function Questions(props) {
       }
 
       return (
-        <S.CreateButton onPress={handleDeleteSelectedItems}>
+        <FloatingActionButton onPress={handleDeleteSelectedItems}>
           <Ionicons name="trash-bin" size={24} color={theme.colors.text_on_background} />
-        </S.CreateButton>
+        </FloatingActionButton>
       );
     }
 
     return (
-      <S.CreateButton
+      <FloatingActionButton
         onPress={() => {
           navigate('create_question');
         }}>
         <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
-      </S.CreateButton>
+      </FloatingActionButton>
     );
   }
 
@@ -187,7 +188,7 @@ export function Questions(props) {
         getItemLayout={(_, index) => ({ length: 90, offset: 90 * index, index })}
       />
 
-      {renderSelectingButton()}
+      {renderActionButton()}
     </Container>
   );
 }

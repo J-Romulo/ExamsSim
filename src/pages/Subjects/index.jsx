@@ -10,6 +10,7 @@ import { EmptyContent } from '../../components/EmptyContent';
 import { LoadingModal } from '../../components/LoadingModal';
 import {
   Container,
+  FloatingActionButton,
   ItemContainer,
   SelectedItemOverlay,
 } from '../../global/styles/globalComponents';
@@ -140,16 +141,16 @@ export function Subjects(props) {
       />
 
       {selectingSubjects ? (
-        <S.CreateButton onPress={handleDeleteSelectedItems}>
+        <FloatingActionButton onPress={handleDeleteSelectedItems}>
           <Ionicons name="trash-bin" size={24} color={theme.colors.text_on_background} />
-        </S.CreateButton>
+        </FloatingActionButton>
       ) : (
-        <S.CreateButton
+        <FloatingActionButton
           onPress={() => {
             navigate('create_subject');
           }}>
           <AntDesign name="plus" size={24} color={theme.colors.text_on_background} />
-        </S.CreateButton>
+        </FloatingActionButton>
       )}
     </Container>
   );
