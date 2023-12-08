@@ -304,7 +304,7 @@ function ExamsScreens() {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const { openTwoOptionsModal } = useDialogModal();
-  const { deleteExam } = useStorage();
+  const { deleteExam, deleteSubject, deleteQuestion } = useStorage();
   const { navigate } = useNavigation();
 
   function deleteExamById(exam_id) {
@@ -316,6 +316,19 @@ function ExamsScreens() {
       async () => {
         await deleteExam(exam_id);
         navigate('exams');
+      }
+    );
+  }
+
+  function deleteSubjectById(subject_id) {
+    setMenuOpened(false);
+    openTwoOptionsModal(
+      'Tem certeza que deseja excluir permanentemente a matéria?',
+      'Sim',
+      'Cancelar',
+      async () => {
+        await deleteSubject(subject_id);
+        navigate('subjects');
       }
     );
   }
@@ -387,6 +400,38 @@ function ExamsScreens() {
         })}
         name="exam_details"
         component={ExamDetails}
+      />
+
+      <SubjectsStack.Screen
+        options={({ route, navigation }) => ({
+          headerShown: true,
+          headerTitle: 'Detalhamento de matéria',
+          headerRight: () => {
+            return (
+              <View>
+                <Menu
+                  style={{ backgroundColor: theme.colors.background_surface }}
+                  visible={menuOpened}
+                  anchor={
+                    <TouchableOpacity onPress={() => setMenuOpened(true)}>
+                      <Entypo name="dots-three-vertical" size={22} color="white" />
+                    </TouchableOpacity>
+                  }
+                  onRequestClose={() => setMenuOpened(false)}>
+                  <MenuItem
+                    onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
+                    Editar
+                  </MenuItem>
+                  <MenuItem onPress={() => deleteSubjectById(route.params.id)}>
+                    Excluir matéria
+                  </MenuItem>
+                </Menu>
+              </View>
+            );
+          },
+        })}
+        name="subject_details"
+        component={SubjectDetails}
       />
     </ExamsStack.Navigator>
   );
