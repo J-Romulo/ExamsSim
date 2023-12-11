@@ -110,7 +110,10 @@ export function ExamDetails({ route }) {
     return (
       <>
         <ItemContainer>
-          <S.ItemTitle>{item.item.correct_answers}</S.ItemTitle>
+          <S.ItemTitle>{new Date(item.item.date).toLocaleDateString()}</S.ItemTitle>
+          <S.ItemTitle>
+            {item.item.correct_answers} / {item.item.wrong_answers}
+          </S.ItemTitle>
         </ItemContainer>
       </>
     );
