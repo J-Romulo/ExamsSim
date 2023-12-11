@@ -12,6 +12,7 @@ import { useDialogModal } from '../hooks/useDialogModal';
 import { useStorage } from '../hooks/useStorage';
 import { Exams } from '../pages/Exams';
 import { CreateExam } from '../pages/Exams/CreateExam';
+import { EditExam } from '../pages/Exams/EditExam';
 import { ExamDetails } from '../pages/Exams/ExamDetails';
 import { SimulateExam } from '../pages/Exams/SimulateExam';
 import { Questions } from '../pages/Questions';
@@ -370,6 +371,16 @@ function ExamsScreens() {
         name="simulate_exam"
         component={SimulateExam}
       />
+
+      <ExamsStack.Screen
+        options={() => ({
+          headerShown: true,
+          headerTitle: 'Editar Simulado',
+        })}
+        name="edit_exam"
+        component={EditExam}
+      />
+
       <ExamsStack.Screen
         options={({ route, navigation }) => ({
           headerShown: true,
@@ -387,7 +398,7 @@ function ExamsScreens() {
                   }
                   onRequestClose={() => setMenuOpened(false)}>
                   <MenuItem
-                    onPress={() => navigation.navigate('edit_subject', { id: route.params.id })}>
+                    onPress={() => navigation.navigate('edit_exam', { id: route.params.id })}>
                     Editar
                   </MenuItem>
                   <MenuItem onPress={() => deleteExamById(route.params.id)}>
